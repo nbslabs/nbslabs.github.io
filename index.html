@@ -3,152 +3,484 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NBSLabs - Coming Soon</title>
-    <meta name="description" content="NBSLabs - Innovation in technology. Coming soon.">
-    <meta name="keywords" content="NBSLabs, technology, innovation, development, labs">
+    <title>nbslabs - Empowering Next-Gen Developers</title>
+    <meta name="description" content="nbslabs - Nurturing innovative software developers through open-source projects, accessible education, and AI-powered coding workshops in Bangladesh.">
+    <meta name="keywords" content="nbslabs, Bangladesh, coding, education, AI, developers, workshops, open source">
+    
+    <!-- External libraries -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #ec4899;
+            --accent-color: #10b981;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --bg-dark: #0f172a;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--bg-dark);
+            overflow-x: hidden;
+        }
+
+        /* Background Effects */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-1);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            overflow: hidden;
-        }
-
-        .container {
             text-align: center;
-            max-width: 600px;
             padding: 2rem;
-            animation: fadeInUp 1s ease-out;
+            position: relative;
         }
 
-        .logo {
-            font-size: 3.5rem;
-            font-weight: 700;
+        .hero-content {
+            max-width: 800px;
+            color: white;
+            z-index: 10;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
             margin-bottom: 1rem;
-            background: linear-gradient(45deg, #ffffff, #e0e7ff);
+            background: linear-gradient(45deg, #ffffff, #e2e8f0, #cbd5e1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            animation: slideInUp 1s ease-out;
         }
 
-        .tagline {
-            font-size: 1.4rem;
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
             margin-bottom: 2rem;
             opacity: 0.9;
-            font-weight: 300;
+            animation: slideInUp 1s ease-out 0.2s both;
         }
 
-        .coming-soon {
-            font-size: 2rem;
-            font-weight: 500;
-            margin-bottom: 2rem;
-            color: #fef3c7;
-        }
-
-        .description {
+        .hero-description {
             font-size: 1.1rem;
-            line-height: 1.6;
             margin-bottom: 3rem;
             opacity: 0.8;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: slideInUp 1s ease-out 0.4s both;
         }
 
-        .notify-form {
+        .cta-buttons {
             display: flex;
-            max-width: 400px;
-            margin: 0 auto 2rem;
             gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: slideInUp 1s ease-out 0.6s both;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 8rem 2rem;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 4rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        /* Mission Section */
+        .mission {
+            padding: 8rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .mission-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .mission-content {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 4rem 3rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mission-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .mission-content p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+        }
+
+        .values-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .value-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .value-item:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .value-item h4 {
+            color: white;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .value-item p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            padding: 6rem 2rem;
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        .newsletter-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .newsletter h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .newsletter p {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 400px;
+            margin: 0 auto;
         }
 
         .email-input {
             flex: 1;
-            padding: 1rem;
+            padding: 1rem 1.5rem;
             border: none;
             border-radius: 50px;
-            font-size: 1rem;
             background: rgba(255, 255, 255, 0.1);
             color: white;
+            font-size: 1rem;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
         }
 
         .email-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .email-input:focus {
             outline: none;
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--primary-color);
             transform: translateY(-2px);
         }
 
-        .notify-btn {
-            padding: 1rem 2rem;
-            background: linear-gradient(45deg, #10b981, #059669);
+        /* Footer */
+        footer {
+            background: var(--bg-dark);
+            padding: 3rem 2rem 2rem;
             color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-        }
-
-        .notify-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6);
+            text-align: center;
         }
 
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
-            margin-top: 2rem;
+            gap: 2rem;
+            margin-bottom: 2rem;
         }
 
         .social-link {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
             text-decoration: none;
+            font-size: 1.2rem;
             transition: all 0.3s ease;
-            padding: 0.5rem;
         }
 
         .social-link:hover {
-            color: white;
-            transform: translateY(-3px);
+            background: var(--primary-color);
+            transform: translateY(-3px) scale(1.1);
         }
 
-        .particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-        }
-
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes fadeInUp {
+        /* Animations */
+        @keyframes slideInUp {
             from {
                 opacity: 0;
                 transform: translateY(30px);
@@ -159,111 +491,382 @@
             }
         }
 
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
             }
-            50% {
-                transform: translateY(-20px);
+            
+            .hero {
+                padding: 6rem 1rem 4rem;
+            }
+            
+            .features {
+                padding: 4rem 1rem;
+            }
+            
+            .mission {
+                padding: 4rem 1rem;
+            }
+            
+            .mission-content {
+                padding: 2rem 1.5rem;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 200px;
             }
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            .logo {
-                font-size: 2.5rem;
-            }
-            
-            .coming-soon {
-                font-size: 1.5rem;
-            }
-            
-            .notify-form {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .notify-btn {
-                padding: 1rem;
-            }
+        /* Cursor effect */
+        .cursor-glow {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
         }
     </style>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
+    <!-- Background Animation -->
+    <div class="bg-animation"></div>
     
-    <div class="container">
-        <h1 class="logo">NBSLabs</h1>
-        <p class="tagline">Innovation • Technology • Excellence</p>
-        <h2 class="coming-soon">Coming Soon</h2>
-        <p class="description">
-            We're working on something amazing. NBSLabs is building the future of technology solutions. 
-            Stay tuned for groundbreaking innovations and cutting-edge developments.
-        </p>
-        
-        <form class="notify-form" onsubmit="handleNotify(event)">
-            <input type="email" class="email-input" placeholder="Enter your email" required>
-            <button type="submit" class="notify-btn">Notify Me</button>
-        </form>
-        
-        <div class="social-links">
-            <a href="#" class="social-link" title="Twitter">𝕏</a>
-            <a href="#" class="social-link" title="LinkedIn">in</a>
-            <a href="#" class="social-link" title="GitHub">⚡</a>
+    <!-- Floating Elements -->
+    <div class="floating-elements" id="floatingElements"></div>
+    
+    <!-- Cursor Glow Effect -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+    
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">nbslabs</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">What We Do</a></li>
+                <li><a href="#mission">Our Mission</a></li>
+                <li><a href="#contact">Join Us</a></li>
+            </ul>
         </div>
-    </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>nbslabs</h1>
+            <p class="hero-subtitle">Empowering Next-Gen Developers in Bangladesh</p>
+            <p class="hero-description">
+                We nurture innovative, ethical software developers through open-source projects, 
+                accessible education, and AI-powered coding workshops. Join us in bridging the gap 
+                between academic knowledge and real-world skills.
+            </p>
+            <div class="cta-buttons">
+                <a href="#features" class="btn btn-primary">Explore Our Vision</a>
+                <a href="#contact" class="btn btn-secondary">Join the Community</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="features-container">
+            <h2 class="section-title scroll-reveal">What We Offer</h2>
+            <p class="section-subtitle scroll-reveal">Building the future of software development education in Bangladesh</p>
+            
+            <div class="features-grid">
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>AI-Powered Coding</h3>
+                    <p>Learn modern development with cutting-edge AI tools. Master GitHub Copilot, prompt engineering, and AI-assisted problem-solving for the future of software development.</p>
+                </div>
+                
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community Workshops</h3>
+                    <p>Join our free live workshops every 2-3 weeks. From beginner-friendly sessions to advanced bootcamps, we create an inclusive learning environment for all skill levels.</p>
+                </div>
+                
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">
+                        <i class="fas fa-child"></i>
+                    </div>
+                    <h3>Kids Coding Club</h3>
+                    <p>Special weekend sessions for young coders using Scratch, Python, and JavaScript. We're nurturing the next generation of innovators from an early age.</p>
+                </div>
+                
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <h3>Open Source Projects</h3>
+                    <p>Contribute to meaningful open-source projects. Build your portfolio while solving real-world problems and collaborating with developers worldwide.</p>
+                </div>
+                
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Premium Mentorship</h3>
+                    <p>Get personalized guidance from industry experts. Our mentorship program helps university students and junior developers accelerate their careers.</p>
+                </div>
+                
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3>Vibe Coding Sessions</h3>
+                    <p>Experience our unique "flow-state" coding environment. Build projects collaboratively in a relaxed, creative atmosphere with AI tools enhancing the process.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section id="mission" class="mission">
+        <div class="mission-container">
+            <div class="mission-content scroll-reveal">
+                <h2>Our Mission</h2>
+                <p>
+                    To be a leading catalyst in Bangladesh for nurturing a new generation of skilled, 
+                    innovative, and ethical software developers, fluent in modern tools and problem-solving methodologies.
+                </p>
+                <p>
+                    We empower aspiring developers of all ages through open-source projects, accessible education, 
+                    and community-driven workshops, with a special focus on child coders and AI integration.
+                </p>
+                
+                <div class="values-list">
+                    <div class="value-item">
+                        <h4>🌟 Openness</h4>
+                        <p>Knowledge should be shared. We prioritize open-source and free resources.</p>
+                    </div>
+                    <div class="value-item">
+                        <h4>🤝 Community</h4>
+                        <p>Learning is collaborative. We foster supportive and inclusive networks.</p>
+                    </div>
+                    <div class="value-item">
+                        <h4>🚀 Innovation</h4>
+                        <p>We embrace cutting-edge technologies like AI to redefine coding.</p>
+                    </div>
+                    <div class="value-item">
+                        <h4>♿ Accessibility</h4>
+                        <p>Tech education should be available to everyone, regardless of background.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section id="contact" class="newsletter">
+        <div class="newsletter-container">
+            <h2 class="scroll-reveal">Join Our Community</h2>
+            <p class="scroll-reveal">
+                Be the first to know about our workshops, bootcamps, and community events. 
+                Start your journey with nbslabs today!
+            </p>
+            <form class="newsletter-form scroll-reveal" id="newsletterForm">
+                <input type="email" class="email-input" placeholder="Enter your email" required>
+                <button type="submit" class="btn btn-primary">Join Now</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-links">
+            <a href="#" class="social-link" title="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="#" class="social-link" title="LinkedIn">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="#" class="social-link" title="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="#" class="social-link" title="Facebook">
+                <i class="fab fa-facebook"></i>
+            </a>
+        </div>
+        <p>&copy; 2025 nbslabs. Empowering developers, one line of code at a time.</p>
+    </footer>
 
     <script>
-        // Create floating particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 20;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                // Random size and position
-                const size = Math.random() * 4 + 2;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                
-                // Random animation delay and duration
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                
-                particlesContainer.appendChild(particle);
-            }
-        }
-        
-        // Handle notify form submission
-        function handleNotify(event) {
-            event.preventDefault();
-            const email = event.target.querySelector('.email-input').value;
-            
-            // Simple validation and feedback
-            if (email) {
-                alert('Thanks for your interest! We\'ll notify you when NBSLabs launches.');
-                event.target.reset();
-            }
-        }
-        
-        // Initialize particles when page loads
-        document.addEventListener('DOMContentLoaded', createParticles);
-        
-        // Add some dynamic effects
+        // Enhanced background animation based on mouse movement
         document.addEventListener('mousemove', (e) => {
             const mouseX = e.clientX / window.innerWidth;
             const mouseY = e.clientY / window.innerHeight;
             
-            document.body.style.background = `linear-gradient(135deg, 
-                hsl(${220 + mouseX * 40}, 70%, ${60 + mouseY * 10}%) 0%, 
-                hsl(${260 + mouseX * 40}, 70%, ${50 + mouseY * 10}%) 100%)`;
+            const bgAnimation = document.querySelector('.bg-animation');
+            const hue1 = 220 + mouseX * 60;
+            const hue2 = 260 + mouseY * 60;
+            const hue3 = 300 + mouseX * 40;
+            const hue4 = 340 + mouseY * 40;
+            
+            bgAnimation.style.background = `linear-gradient(-45deg, 
+                hsl(${hue1}, 70%, 60%), 
+                hsl(${hue2}, 70%, 55%), 
+                hsl(${hue3}, 80%, 65%), 
+                hsl(${hue4}, 75%, 60%))`;
+            bgAnimation.style.backgroundSize = '400% 400%';
+        });
+
+        // Cursor glow effect
+        const cursorGlow = document.getElementById('cursorGlow');
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX - 10 + 'px';
+            cursorGlow.style.top = e.clientY - 10 + 'px';
+        });
+
+        // Create floating elements
+        function createFloatingElements() {
+            const container = document.getElementById('floatingElements');
+            const elementCount = 15;
+            
+            for (let i = 0; i < elementCount; i++) {
+                const element = document.createElement('div');
+                element.className = 'floating-element';
+                
+                const size = Math.random() * 60 + 20;
+                element.style.width = size + 'px';
+                element.style.height = size + 'px';
+                element.style.left = Math.random() * 100 + '%';
+                element.style.top = Math.random() * 100 + '%';
+                element.style.animationDelay = Math.random() * 6 + 's';
+                element.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                
+                container.appendChild(element);
+            }
+        }
+
+        // Parallax scroll effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            
+            document.querySelector('.floating-elements').style.transform = 
+                `translateY(${rate}px)`;
+        });
+
+        // Scroll reveal animation
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('revealed');
+                }
+            });
+        }
+
+        // Navbar background on scroll
+        function handleNavbarScroll() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(15, 23, 42, 0.95)';
+            } else {
+                navbar.style.background = 'rgba(15, 23, 42, 0.9)';
+            }
+        }
+
+        // Form submission
+        document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = e.target.querySelector('.email-input').value;
+            
+            // Simple success feedback
+            const button = e.target.querySelector('.btn');
+            const originalText = button.textContent;
+            
+            button.textContent = 'Welcome! 🎉';
+            button.style.background = 'linear-gradient(45deg, #10b981, #059669)';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = '';
+                e.target.reset();
+            }, 2000);
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Enhanced card hover effects
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-15px) rotateX(5deg)';
+                this.style.boxShadow = '0 20px 40px rgba(99, 102, 241, 0.3)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) rotateX(0)';
+                this.style.boxShadow = '';
+            });
+        });
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            createFloatingElements();
+            revealOnScroll();
+        });
+
+        // Event listeners
+        window.addEventListener('scroll', () => {
+            revealOnScroll();
+            handleNavbarScroll();
+        });
+
+        // Add some interactive button effects
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.05)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
         });
     </script>
 </body>
