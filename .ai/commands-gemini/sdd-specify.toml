@@ -1,0 +1,6 @@
+description = "Phase 2: Generate requirements from idea.md"
+prompt = """
+Read and follow the skill at .ai/skills/requirement-generation-skill/SKILL.md
+Apply it to the feature at .ai/sdd/{{args}}/
+If no feature name is provided, list features in .ai/sdd/ and ask which one to use.
+"""

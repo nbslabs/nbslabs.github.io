@@ -1,0 +1,7 @@
+description = "Phase 4: Generate implementation plans and evaluation criteria for all tasks"
+prompt = """
+Read and follow the skill at .ai/skills/plan-generation-skill/SKILL.md
+Apply it to the feature at .ai/sdd/{{args}}/
+If no feature name is provided, list features in .ai/sdd/ and ask which one to use.
+After generating plans, also run the evaluation generation skill at .ai/skills/evaluation-generation-skill/SKILL.md for the same feature.
+"""

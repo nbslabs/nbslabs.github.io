@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [],
+    "deny": []
+  },
+  "mcpServers": {
+    "dotai-knowledge": {
+      "command": "npx",
+      "args": ["dotai", "knowledge", "serve", "--stdio", "--project", "/home/niazsiraj/Niaz/Github/nbslabs.github.io"]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+
+# dotai — tool dirs are symlinks, managed by dotai
+.claude/
+CLAUDE.md
+.gemini/
+GEMINI.md
+.geminiignore
+.github/
+.agents/
+AGENTS.md

@@ -1,0 +1,40 @@
+{
+  "version": "3.0.0",
+  "tools": [
+    "claude",
+    "gemini",
+    "copilot",
+    "antigravity"
+  ],
+  "aiDir": ".ai",
+  "gitignore": true,
+  "links": {
+    "claude": {
+      "linked": true,
+      "linkedAt": "2026-04-17T19:00:23.099Z"
+    },
+    "gemini": {
+      "linked": true,
+      "linkedAt": "2026-04-17T19:00:23.102Z"
+    },
+    "copilot": {
+      "linked": true,
+      "linkedAt": "2026-04-17T19:00:23.103Z"
+    },
+    "antigravity": {
+      "linked": true,
+      "linkedAt": "2026-04-17T19:00:23.104Z"
+    }
+  },
+  "scaffoldVersion": "3.0.0",
+  "sdd": {
+    "enabled": true,
+    "initializedAt": "2026-04-17T19:02:09.510Z"
+  },
+  "knowledge": {
+    "enabled": true,
+    "scanDepth": 2,
+    "excludePatterns": [],
+    "autoUpdateOnCommit": false
+  }
+}
