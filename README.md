@@ -13,14 +13,14 @@ nbslabs is a Bangladeshi developer community and open-source initiative dedicate
 
 ## Programs
 
-| Program | Description |
-|---------|-------------|
+| Program                         | Description                                                                                   |
+| ------------------------------- | --------------------------------------------------------------------------------------------- |
 | **AI-Powered Coding Workshops** | Hands-on sessions with GitHub Copilot, Claude Code, prompt engineering, and agentic workflows |
-| **Community Workshops** | Free, live workshops every 2–3 weeks — beginner to advanced, all recorded publicly |
-| **Kids Coding Club** | Weekend sessions for young learners (Scratch, Python, JavaScript) |
-| **Open-Source Contributions** | Structured contribution pathways into nbslabs tools and third-party ecosystems |
-| **Premium Mentorship** | Personalized 1:1 guidance from industry practitioners matched to your career trajectory |
-| **Vibe Coding Sessions** | Collaborative flow-state coding sprints — hackathon energy, no burnout |
+| **Community Workshops**         | Free, live workshops every 2–3 weeks — beginner to advanced, all recorded publicly            |
+| **Kids Coding Club**            | Weekend sessions for young learners (Scratch, Python, JavaScript)                             |
+| **Open-Source Contributions**   | Structured contribution pathways into nbslabs tools and third-party ecosystems                |
+| **Premium Mentorship**          | Personalized 1:1 guidance from industry practitioners matched to your career trajectory       |
+| **Vibe Coding Sessions**        | Collaborative flow-state coding sprints — hackathon energy, no burnout                        |
 
 ---
 
@@ -64,12 +64,12 @@ The site follows the nbslabs brand guidelines:
 
 ## Get Involved
 
-| | |
-|-|---|
-| **Join** | Sign up at [nbslabs.dev](https://nbslabs.dev) for workshop invites and community updates |
-| **Contribute** | Fork any project on [github.com/nbslabs](https://github.com/nbslabs) and open a PR |
-| **Mentor** | Apply to the mentorship program if you're an industry practitioner |
-| **Sponsor** | Help sustain free programs — reach out via [nbslabs.dev](https://nbslabs.dev) |
+|                |                                                                                          |
+| -------------- | ---------------------------------------------------------------------------------------- |
+| **Join**       | Sign up at [nbslabs.dev](https://nbslabs.dev) for workshop invites and community updates |
+| **Contribute** | Fork any project on [github.com/nbslabs](https://github.com/nbslabs) and open a PR       |
+| **Mentor**     | Apply to the mentorship program if you're an industry practitioner                       |
+| **Sponsor**    | Help sustain free programs — reach out via [nbslabs.dev](https://nbslabs.dev)            |
 
 ---
 

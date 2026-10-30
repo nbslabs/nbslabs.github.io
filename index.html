@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>nbslabs — Empowering Developers in Bangladesh</title>
-  <meta name="description" content="nbslabs is a Bangladeshi developer community and open-source initiative. AI-powered workshops, open-source tooling, community mentorship.">
-  <meta name="keywords" content="nbslabs, Bangladesh, coding, AI, developers, workshops, open source, dotai">
-  <meta property="og:title" content="nbslabs — Empowering Developers in Bangladesh">
-  <meta property="og:description" content="Bridging academic knowledge with real-world mastery. Join Bangladesh's developer community.">
+  <title>nbslabs - Research-Driven Open-Source AI Lab</title>
+  <meta name="description" content="nbslabs is an independent research and engineering lab focused on building open-source tools and conducting applied research at the intersection of AI, algorithms, and software systems.">
+  <meta name="keywords" content="nbslabs, AI research, open source, developer tools, algorithms, dotai, Bangladesh, research lab">
+  <meta property="og:title" content="nbslabs - Research-Driven Open-Source AI Lab">
+  <meta property="og:description" content="Inventing tools, publishing research, shipping open source. An independent lab based in Dhaka, Bangladesh.">
   <meta property="og:url" content="https://nbslabs.dev">
+  <meta property="og:type" content="website">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
-    /* ── Design Tokens ─────────────────────────────────────── */
+    /* -- Design Tokens -- */
     :root {
       --color-primary:        #1A1A1A;
       --color-background:     #F2F2F2;
@@ -40,7 +41,7 @@
       --radius-full: 999px;
     }
 
-    /* ── Reset ──────────────────────────────────────────────── */
+    /* -- Reset -- */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; font-size: 16px; }
     body {
@@ -54,7 +55,7 @@
     img { display: block; max-width: 100%; }
     ul { list-style: none; }
 
-    /* ── Network SVG Background ─────────────────────────────── */
+    /* -- Network SVG Background -- */
     .network-bg {
       position: absolute;
       inset: 0;
@@ -64,7 +65,7 @@
     }
     .network-bg svg { width: 100%; height: 100%; }
 
-    /* ── Navigation ─────────────────────────────────────────── */
+    /* -- Navigation -- */
     nav {
       position: fixed;
       top: 0;
@@ -72,6 +73,7 @@
       z-index: 100;
       background: rgba(242,242,242,0.92);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--color-border);
       transition: box-shadow 0.3s;
     }
@@ -99,6 +101,7 @@
     .nav-links {
       display: flex;
       gap: 2rem;
+      align-items: center;
     }
     .nav-links a {
       font-size: 0.9rem;
@@ -135,7 +138,7 @@
       transition: all 0.3s;
     }
 
-    /* ── Hero ───────────────────────────────────────────────── */
+    /* -- Hero -- */
     .hero {
       position: relative;
       min-height: 100vh;
@@ -153,26 +156,26 @@
       margin: 0 auto;
       width: 100%;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 64px;
       align-items: center;
     }
 
     .hero-label {
       display: inline-block;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--color-accent-dark);
       background: rgba(126,166,168,0.12);
-      padding: 4px 12px;
+      padding: 5px 14px;
       border-radius: var(--radius-full);
       margin-bottom: 24px;
     }
 
     .hero h1 {
-      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
       font-weight: 700;
       line-height: 1.15;
       color: var(--color-primary);
@@ -187,7 +190,7 @@
       font-size: 1.0625rem;
       color: var(--color-text-secondary);
       line-height: 1.7;
-      max-width: 480px;
+      max-width: 520px;
       margin-bottom: 40px;
     }
 
@@ -243,45 +246,53 @@
     }
     .btn-accent:hover { background: var(--color-accent-dark); }
 
-    /* Hero stats */
-    .hero-stats {
+    /* Hero identity cards */
+    .hero-identity {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
     }
 
-    .stat-card {
+    .identity-card {
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
       padding: 24px 28px;
       box-shadow: var(--shadow-sm);
-      transition: box-shadow 0.2s, transform 0.2s;
+      transition: box-shadow 0.25s, transform 0.25s;
     }
-    .stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .identity-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
 
-    .stat-card-accent { border-left: 3px solid var(--color-accent); }
+    .identity-card-accent { border-left: 3px solid var(--color-accent); }
 
-    .stat-number {
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--color-primary);
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-    .stat-label {
-      font-size: 0.875rem;
+    .identity-card .ic-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       color: var(--color-text-muted);
+      margin-bottom: 6px;
+    }
+    .identity-card .ic-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      line-height: 1.4;
+    }
+    .identity-card .ic-value.mono {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
       font-weight: 400;
+      color: var(--color-accent-dark);
     }
 
-    .stat-inline {
+    .identity-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 16px;
     }
 
-    /* ── Section Shell ──────────────────────────────────────── */
+    /* -- Section Shell -- */
     section { padding: 96px 80px; }
 
     .section-inner {
@@ -309,31 +320,31 @@
     .section-subtext {
       font-size: 1rem;
       color: var(--color-text-secondary);
-      max-width: 560px;
+      max-width: 680px;
       line-height: 1.7;
     }
 
     .section-header { margin-bottom: 56px; }
 
-    /* ── Programs ───────────────────────────────────────────── */
-    #programs { background: var(--color-surface); }
+    /* -- Research Areas -- */
+    #research { background: var(--color-surface); }
 
-    .programs-grid {
+    .research-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 24px;
     }
 
-    .program-card {
+    .research-card {
       background: var(--color-background);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
-      padding: 28px;
-      transition: box-shadow 0.2s, transform 0.2s;
+      padding: 32px 28px;
+      transition: box-shadow 0.25s, transform 0.25s;
       position: relative;
       overflow: hidden;
     }
-    .program-card::after {
+    .research-card::after {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
@@ -343,27 +354,40 @@
       transform-origin: left;
       transition: transform 0.3s;
     }
-    .program-card:hover::after { transform: scaleX(1); }
-    .program-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); background: var(--color-surface); }
+    .research-card:hover::after { transform: scaleX(1); }
+    .research-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); background: var(--color-surface); }
 
-    .program-icon {
-      font-size: 1.5rem;
-      margin-bottom: 16px;
-      display: block;
+    .research-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      background: rgba(126,166,168,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
     }
-    .program-card h3 {
-      font-size: 1.0625rem;
+    .research-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--color-accent-dark);
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    .research-card h3 {
+      font-size: 1.125rem;
       font-weight: 700;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       color: var(--color-primary);
     }
-    .program-card p {
+    .research-card p {
       font-size: 0.9rem;
       color: var(--color-text-secondary);
-      line-height: 1.65;
+      line-height: 1.7;
     }
 
-    /* ── Open Source ────────────────────────────────────────── */
+    /* -- Open Source -- */
     #oss { background: var(--color-background); }
 
     .oss-feature {
@@ -373,7 +397,6 @@
       align-items: start;
       margin-bottom: 64px;
     }
-
     .oss-feature:last-child { margin-bottom: 0; }
 
     .oss-body h3 {
@@ -399,6 +422,7 @@
       color: var(--color-text-secondary);
       line-height: 1.7;
       margin-bottom: 24px;
+      max-width: 480px;
     }
 
     .oss-meta {
@@ -431,69 +455,89 @@
     .oss-code-panel .cmd     { color: var(--color-accent-light); }
     .oss-code-panel .kw      { color: #A8C4C6; }
 
-    .oss-projects-list {
+    .oss-projects-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
     }
 
-    .oss-project-item {
+    .oss-project-card {
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
-      padding: 20px 24px;
-      transition: box-shadow 0.2s;
+      padding: 24px;
+      transition: box-shadow 0.25s, transform 0.25s;
     }
-    .oss-project-item:hover { box-shadow: var(--shadow-md); }
-    .oss-project-item h4 {
-      font-size: 0.9375rem;
+    .oss-project-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+
+    .oss-project-card h4 {
+      font-size: 1rem;
       font-weight: 700;
       color: var(--color-primary);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
-    .oss-project-item p {
+    .oss-project-card .proj-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--color-accent-dark);
+      background: rgba(126,166,168,0.1);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+    .oss-project-card p {
       font-size: 0.85rem;
       color: var(--color-text-muted);
-      line-height: 1.55;
+      line-height: 1.6;
     }
 
-    /* ── Audiences ──────────────────────────────────────────── */
-    #audience { background: var(--color-surface); }
+    /* -- How We Work -- */
+    #how-we-work { background: var(--color-surface); }
 
-    .audience-grid {
+    .workflow-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 24px;
     }
 
-    .audience-card {
+    .workflow-card {
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
       padding: 28px 24px;
       background: var(--color-background);
-      transition: box-shadow 0.2s, transform 0.2s;
+      transition: box-shadow 0.25s, transform 0.25s;
+      position: relative;
     }
-    .audience-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
+    .workflow-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
 
-    .audience-emoji { font-size: 2rem; margin-bottom: 16px; display: block; }
-    .audience-card h3 {
+    .workflow-number {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--color-accent);
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .workflow-card h3 {
       font-size: 1rem;
       font-weight: 700;
       margin-bottom: 10px;
       color: var(--color-primary);
     }
-    .audience-card p {
+    .workflow-card p {
       font-size: 0.875rem;
       color: var(--color-text-secondary);
       line-height: 1.6;
     }
 
-    /* ── Mission & Values ───────────────────────────────────── */
-    #mission { background: var(--color-primary); }
+    /* -- Mission & Values -- */
+    #values { background: var(--color-primary); }
 
-    #mission .section-label { color: var(--color-accent-light); }
-    #mission .section-heading { color: #fff; }
-    #mission .section-subtext { color: rgba(255,255,255,0.7); max-width: 680px; }
+    #values .section-label { color: var(--color-accent-light); }
+    #values .section-heading { color: #fff; }
+    #values .section-subtext { color: rgba(255,255,255,0.7); max-width: 680px; }
 
     .values-grid {
       display: grid;
@@ -507,10 +551,26 @@
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: var(--radius-md);
       padding: 24px 20px;
-      transition: background 0.2s;
+      transition: background 0.25s;
     }
     .value-card:hover { background: rgba(255,255,255,0.1); }
-    .value-card .v-icon { font-size: 1.5rem; margin-bottom: 14px; display: block; }
+
+    .value-icon {
+      width: 36px;
+      height: 36px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .value-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--color-accent-light);
+      stroke-width: 1.5;
+      fill: none;
+    }
+
     .value-card h4 {
       font-size: 0.9375rem;
       font-weight: 700;
@@ -519,8 +579,48 @@
     }
     .value-card p { font-size: 0.8125rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
 
-    /* ── Roadmap ────────────────────────────────────────────── */
-    #roadmap { background: var(--color-background); }
+    /* -- Technology Philosophy -- */
+    #philosophy { background: var(--color-background); }
+
+    .philosophy-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .philosophy-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 32px 28px;
+      transition: box-shadow 0.25s;
+    }
+    .philosophy-card:hover { box-shadow: var(--shadow-md); }
+
+    .philosophy-card h3 {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .philosophy-card h3 .ph-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      flex-shrink: 0;
+    }
+    .philosophy-card p {
+      font-size: 0.9rem;
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+    }
+
+    /* -- Roadmap -- */
+    #roadmap { background: var(--color-surface); }
 
     .roadmap-grid {
       display: grid;
@@ -529,12 +629,14 @@
     }
 
     .roadmap-card {
-      background: var(--color-surface);
+      background: var(--color-background);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
       padding: 32px 28px;
       position: relative;
+      transition: box-shadow 0.25s;
     }
+    .roadmap-card:hover { box-shadow: var(--shadow-md); }
 
     .roadmap-horizon {
       font-size: 0.72rem;
@@ -568,8 +670,13 @@
       flex-shrink: 0;
     }
 
-    /* ── Get Involved ───────────────────────────────────────── */
-    #involve { background: var(--color-surface); }
+    .roadmap-card.current {
+      border-color: var(--color-accent);
+      border-width: 1.5px;
+    }
+
+    /* -- Get Involved -- */
+    #involve { background: var(--color-background); }
 
     .involve-grid {
       display: grid;
@@ -581,11 +688,29 @@
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
       padding: 28px 24px;
-      background: var(--color-background);
-      transition: box-shadow 0.2s, transform 0.2s;
+      background: var(--color-surface);
+      transition: box-shadow 0.25s, transform 0.25s;
     }
     .involve-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
-    .involve-card .i-icon { font-size: 1.5rem; margin-bottom: 16px; display: block; }
+
+    .involve-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      background: rgba(126,166,168,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .involve-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--color-accent-dark);
+      stroke-width: 1.5;
+      fill: none;
+    }
+
     .involve-card h3 {
       font-size: 1rem;
       font-weight: 700;
@@ -602,10 +727,11 @@
       font-size: 0.875rem;
       font-weight: 600;
       color: var(--color-accent-dark);
+      transition: color 0.2s;
     }
-    .involve-link:hover { text-decoration: underline; }
+    .involve-link:hover { text-decoration: underline; color: var(--color-accent); }
 
-    /* ── Contact ────────────────────────────────────────────── */
+    /* -- Contact -- */
     #contact {
       background: radial-gradient(ellipse at center, #FFFFFF 30%, #E8F0F0 100%);
       border-top: 1px solid var(--color-border);
@@ -633,7 +759,7 @@
       padding: 16px 20px;
       text-decoration: none;
       color: var(--color-text-primary);
-      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+      transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
     }
     .contact-item:hover {
       box-shadow: var(--shadow-md);
@@ -648,8 +774,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
       flex-shrink: 0;
+    }
+    .contact-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--color-accent-dark);
+      stroke-width: 1.5;
+      fill: none;
     }
     .contact-detail { text-align: left; }
     .contact-platform {
@@ -666,7 +798,7 @@
       color: var(--color-accent-dark);
     }
 
-    /* ── Footer ─────────────────────────────────────────────── */
+    /* -- Footer -- */
     footer {
       background: var(--color-accent-dark);
       padding: 40px 80px;
@@ -685,7 +817,7 @@
 
     .footer-logo .nbs  { font-size: 1.25rem; font-weight: 800; color: #fff; }
     .footer-logo .labs { font-size: 1.25rem; font-weight: 200; color: rgba(255,255,255,0.8); }
-    .footer-tagline { font-size: 0.8125rem; color: rgba(255,255,255,0.5); margin-top: 4px; }
+    .footer-tagline { font-size: 0.8125rem; color: rgba(255,255,255,0.5); margin-top: 4px; font-style: italic; }
 
     .footer-links {
       display: flex;
@@ -704,7 +836,7 @@
       color: rgba(255,255,255,0.4);
     }
 
-    /* ── Scroll Reveal ──────────────────────────────────────── */
+    /* -- Scroll Reveal -- */
     .reveal {
       opacity: 0;
       transform: translateY(24px);
@@ -715,24 +847,22 @@
       transform: translateY(0);
     }
 
-    /* ── Responsive ─────────────────────────────────────────── */
+    /* -- Responsive -- */
     @media (max-width: 1024px) {
       section { padding: 72px 40px; }
       .hero { padding: 100px 40px 72px; }
       .nav-inner { padding: 0 40px; }
       footer { padding: 32px 40px; }
 
-      .hero-inner         { grid-template-columns: 1fr; gap: 40px; }
-      .hero-stats         { flex-direction: row; flex-wrap: wrap; }
-      .stat-card          { flex: 1; min-width: 140px; }
-      .stat-inline        { grid-template-columns: repeat(4,1fr); }
-      .programs-grid      { grid-template-columns: repeat(2,1fr); }
-      .oss-feature        { grid-template-columns: 1fr; gap: 32px; }
-      .audience-grid      { grid-template-columns: repeat(2,1fr); }
-      .values-grid        { grid-template-columns: repeat(3,1fr); }
-      .roadmap-grid       { grid-template-columns: 1fr 1fr; }
-      .involve-grid       { grid-template-columns: repeat(2,1fr); }
-      .oss-projects-list  { grid-template-columns: 1fr; }
+      .hero-inner           { grid-template-columns: 1fr; gap: 40px; }
+      .research-grid        { grid-template-columns: 1fr 1fr; }
+      .oss-feature          { grid-template-columns: 1fr; gap: 32px; }
+      .workflow-grid        { grid-template-columns: repeat(2,1fr); }
+      .values-grid          { grid-template-columns: repeat(3,1fr); }
+      .philosophy-grid      { grid-template-columns: 1fr; }
+      .roadmap-grid         { grid-template-columns: 1fr 1fr; }
+      .involve-grid         { grid-template-columns: repeat(2,1fr); }
+      .oss-projects-grid    { grid-template-columns: repeat(2,1fr); }
     }
 
     @media (max-width: 768px) {
@@ -749,6 +879,7 @@
         top: 64px; left: 0; right: 0;
         background: rgba(242,242,242,0.97);
         backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         border-bottom: 1px solid var(--color-border);
         padding: 16px 20px;
         gap: 4px;
@@ -761,29 +892,30 @@
       .nav-links.open a:last-child { border-bottom: none; }
       .nav-hamburger { display: flex; }
 
-      .programs-grid  { grid-template-columns: 1fr; }
-      .audience-grid  { grid-template-columns: 1fr; }
-      .values-grid    { grid-template-columns: repeat(2,1fr); }
-      .roadmap-grid   { grid-template-columns: 1fr; }
-      .involve-grid   { grid-template-columns: 1fr; }
-      .stat-inline    { grid-template-columns: 1fr 1fr; }
-      .contact-list   { max-width: 100%; }
-      .footer-inner   { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .research-grid      { grid-template-columns: 1fr; }
+      .workflow-grid      { grid-template-columns: 1fr; }
+      .values-grid        { grid-template-columns: repeat(2,1fr); }
+      .roadmap-grid       { grid-template-columns: 1fr; }
+      .involve-grid       { grid-template-columns: 1fr; }
+      .identity-row       { grid-template-columns: 1fr; }
+      .oss-projects-grid  { grid-template-columns: 1fr; }
+      .contact-list       { max-width: 100%; }
+      .footer-inner       { flex-direction: column; align-items: flex-start; gap: 20px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ── Navigation ─────────────────────────────────────────── -->
-  <nav id="navbar">
+  <!-- Navigation -->
+  <nav id="navbar" role="navigation" aria-label="Main navigation">
     <div class="nav-inner">
       <a href="#" class="logo"><span class="nbs">nbs</span><span class="labs">labs</span></a>
       <ul class="nav-links" id="navLinks">
-        <li><a href="#programs">Programs</a></li>
+        <li><a href="#research">Research</a></li>
         <li><a href="#oss">Open Source</a></li>
-        <li><a href="#mission">Mission</a></li>
-
-        <li><a href="#contact" class="nav-cta">Contact Us</a></li>
+        <li><a href="#values">Values</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
       </ul>
       <div class="nav-hamburger" id="hamburger" aria-label="Toggle menu" role="button" tabindex="0">
         <span></span><span></span><span></span>
@@ -791,7 +923,7 @@
     </div>
   </nav>
 
-  <!-- ── Hero ───────────────────────────────────────────────── -->
+  <!-- Hero -->
   <section class="hero" id="home">
     <div class="network-bg" aria-hidden="true">
       <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
@@ -813,6 +945,10 @@
           <line x1="700" y1="340" x2="640" y2="580"/>
           <line x1="900" y1="220" x2="860" y2="480"/>
           <line x1="1100" y1="380" x2="1080" y2="620"/>
+          <line x1="160" y1="60" x2="400" y2="100"/>
+          <line x1="400" y1="100" x2="600" y2="50"/>
+          <line x1="800" y1="680" x2="1000" y2="720"/>
+          <line x1="1000" y1="720" x2="1250" y2="670"/>
         </g>
         <g fill="#7EA6A8" opacity="0.18">
           <circle cx="80"  cy="120" r="4"/>
@@ -828,120 +964,138 @@
           <circle cx="860" cy="480" r="4"/>
           <circle cx="1080" cy="620" r="3"/>
           <circle cx="1360" cy="540" r="4"/>
+          <circle cx="160" cy="60" r="3"/>
+          <circle cx="400" cy="100" r="3"/>
+          <circle cx="600" cy="50" r="3"/>
+          <circle cx="800" cy="680" r="3"/>
+          <circle cx="1000" cy="720" r="3"/>
+          <circle cx="1250" cy="670" r="3"/>
         </g>
       </svg>
     </div>
 
     <div class="hero-inner">
       <div class="hero-text">
-        <span class="hero-label">Dhaka, Bangladesh · Est. 2025</span>
-        <h1>Building the Next Generation of <em>Software Engineers</em></h1>
+        <span class="hero-label">RESEARCH-DRIVEN OPEN-SOURCE AI LAB</span>
+        <h1>Inventing Tools, Publishing Research, <em>Shipping Open Source</em></h1>
         <p class="hero-desc">
-          nbslabs bridges the gap between academic knowledge and production-grade mastery —
-          through AI-powered workshops, open-source tooling, and community mentorship.
+          nbslabs is an independent research and engineering lab focused on building open-source tools
+          and conducting applied research at the intersection of artificial intelligence, algorithms,
+          and software systems. Based in Dhaka, Bangladesh.
         </p>
         <div class="hero-actions">
-          <a href="#contact" class="btn-primary">Join the Community</a>
-          <a href="#programs" class="btn-outline">Explore Programs</a>
+          <a href="https://github.com/nbslabs" target="_blank" rel="noopener" class="btn-primary">Explore Projects</a>
+          <a href="#research" class="btn-outline">Read the Research</a>
         </div>
       </div>
 
-      <div class="hero-stats">
-        <div class="stat-card stat-card-accent reveal">
-          <div class="stat-number">6</div>
-          <div class="stat-label">Active Programs</div>
+      <div class="hero-identity">
+        <div class="identity-card identity-card-accent reveal">
+          <div class="ic-label">Identity</div>
+          <div class="ic-value">Independent Research and Open-Source Engineering Lab</div>
         </div>
-        <div class="stat-inline">
-          <div class="stat-card reveal">
-            <div class="stat-number">2–3</div>
-            <div class="stat-label">Workshops / month</div>
+        <div class="identity-row">
+          <div class="identity-card reveal">
+            <div class="ic-label">Founded</div>
+            <div class="ic-value">2025</div>
           </div>
-          <div class="stat-card reveal">
-            <div class="stat-number">4+</div>
-            <div class="stat-label">Open-source tools</div>
+          <div class="identity-card reveal">
+            <div class="ic-label">Headquarters</div>
+            <div class="ic-value">Dhaka, Bangladesh</div>
           </div>
-          <div class="stat-card reveal">
-            <div class="stat-number">Free</div>
-            <div class="stat-label">All community programs</div>
+        </div>
+        <div class="identity-row">
+          <div class="identity-card reveal">
+            <div class="ic-label">Flagship Package</div>
+            <div class="ic-value mono">@nbslabs/dotai</div>
           </div>
-          <div class="stat-card reveal">
-            <div class="stat-number">6–15</div>
-            <div class="stat-label">Kids Coding Club age</div>
+          <div class="identity-card reveal">
+            <div class="ic-label">Focus</div>
+            <div class="ic-value" style="font-size:0.875rem;">AI, Algorithms, Open-Source Tooling</div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Programs ───────────────────────────────────────────── -->
-  <section id="programs">
+  <!-- Research Areas -->
+  <section id="research">
     <div class="section-inner">
       <div class="section-header">
-        <p class="section-label">What We Offer</p>
-        <h2 class="section-heading">Six Programs, One Mission</h2>
+        <p class="section-label">Research and Engineering</p>
+        <h2 class="section-heading">Four Interconnected Research Tracks</h2>
         <p class="section-subtext">
-          Every program is designed to meet developers where they are — from school-age
-          curious learners to working engineers upskilling with AI.
+          Each track produces open-source tools, technical publications, or both. Every project begins
+          as a research question and graduates into a tool when the answer proves useful.
         </p>
       </div>
 
-      <div class="programs-grid">
-        <div class="program-card reveal">
-          <span class="program-icon">🤖</span>
-          <h3>AI-Powered Coding Workshops</h3>
-          <p>Hands-on sessions with GitHub Copilot, Claude Code, and agentic workflows. Participants build real features using real AI tools — developing muscle memory for professional AI-assisted development.</p>
+      <div class="research-grid">
+        <div class="research-card reveal">
+          <div class="research-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2a4 4 0 0 1 4 4c0 1.7-1 3.2-2.5 3.8V12h3a2 2 0 0 1 2 2v2.2A4 4 0 0 1 20 20a4 4 0 1 1-6.5-3.1V14h-3v2.9A4 4 0 0 1 12 20a4 4 0 1 1-6.5-3.1V14a2 2 0 0 1 2-2h3V9.8A4 4 0 0 1 8 6a4 4 0 0 1 4-4z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Applied AI and Intelligent Systems</h3>
+          <p>Building AI-powered tools and systems that solve real problems. AI agents, agentic workflows, retrieval-augmented generation systems, AI-native developer tools, and intelligent automation. We apply LLMs, embeddings, and ML pipelines where they create genuine leverage, not hype.</p>
         </div>
-        <div class="program-card reveal">
-          <span class="program-icon">🏫</span>
-          <h3>Community Workshops</h3>
-          <p>Free, live sessions every 2–3 weeks — from beginner-friendly intros to advanced bootcamps. Topics: system design, API development, DevOps, and data structures. All sessions recorded publicly.</p>
+        <div class="research-card reveal">
+          <div class="research-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="4 17 10 11 4 5" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="12" y1="19" x2="20" y2="19" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Algorithms and Data Structures</h3>
+          <p>Original work on algorithms, data structures, and computational techniques. Novel approaches to graph problems, search optimizations, parsing, indexing, and code analysis. We publish implementations alongside explanations, making research accessible and reproducible.</p>
         </div>
-        <div class="program-card reveal">
-          <span class="program-icon">👦</span>
-          <h3>Kids Coding Club</h3>
-          <p>Weekend sessions for young learners (ages 6–15) using Scratch, Python, and JavaScript. Creativity-first curriculum. Alumni return as junior mentors, creating a virtuous learning cycle.</p>
+        <div class="research-card reveal">
+          <div class="research-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="8" y1="21" x2="16" y2="21" stroke-linecap="round"/>
+              <line x1="12" y1="17" x2="12" y2="21" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Developer Infrastructure and Tooling</h3>
+          <p>Production-grade open-source tools for developers. Configuration management, code analysis, documentation generation, knowledge graphs, and protocol-level tooling. These tools are not demos - they are things engineers install and rely on.</p>
         </div>
-        <div class="program-card reveal">
-          <span class="program-icon">💻</span>
-          <h3>Open-Source Contributions</h3>
-          <p>Structured contribution pathways into nbslabs tools and third-party ecosystems. Every PR is a portfolio artifact. First-time contributors get curated issue lists and code review guidance.</p>
-        </div>
-        <div class="program-card reveal">
-          <span class="program-icon">🎓</span>
-          <h3>Premium Mentorship</h3>
-          <p>Selective, personalized guidance from industry practitioners. University students and junior developers are matched based on career trajectory. The premium tier sustains free community programs.</p>
-        </div>
-        <div class="program-card reveal">
-          <span class="program-icon">🎵</span>
-          <h3>Vibe Coding Sessions</h3>
-          <p>nbslabs's signature format: collaborative flow-state coding sprints in a relaxed, creative atmosphere. Teams build prototypes they actually want to use — AI tools as co-pilots, not shortcuts.</p>
+        <div class="research-card reveal">
+          <div class="research-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="3" stroke-linecap="round"/>
+              <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Core AI Research</h3>
+          <p>Exploratory work in core AI areas: model behavior, prompt engineering science, agent architectures, evaluation methodologies, and novel applications of transformer-based systems. When we find something interesting, we write it up and release it.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Open Source ─────────────────────────────────────────── -->
+  <!-- Open Source -->
   <section id="oss">
     <div class="section-inner">
       <div class="section-header">
         <p class="section-label">Open Source</p>
-        <h2 class="section-heading">Tools Built for Engineers, by Engineers</h2>
+        <h2 class="section-heading">Tools Built in the Lab, Released to the World</h2>
         <p class="section-subtext">
-          Open-source software is the technical backbone of nbslabs. Everything ships under
-          <code style="font-family:var(--font-mono);font-size:0.875rem;background:rgba(126,166,168,0.12);color:var(--color-accent-dark);padding:2px 6px;border-radius:4px;">@nbslabs</code>
-          on npm and GitHub.
+          Open-source software is the primary output of nbslabs. Every project is publicly available,
+          actively maintained, and designed to be useful beyond the lab.
         </p>
       </div>
 
       <!-- dotai feature -->
       <div class="oss-feature reveal">
         <div class="oss-body">
-          <span class="oss-badge">@nbslabs/dotai · Flagship</span>
+          <span class="oss-badge">@nbslabs/dotai - Flagship</span>
           <h3>dotai</h3>
           <p>
             Every AI coding assistant expects its config in a different file at a different path.
-            dotai solves that — it unifies Claude Code, Gemini CLI, Antigravity, and GitHub Copilot
-            under a single <code style="font-family:var(--font-mono);font-size:0.85em;">.ai/</code> directory,
+            dotai solves that - it unifies Claude Code, Gemini CLI, Antigravity, and GitHub Copilot
+            under a single <code style="font-family:var(--font-mono);font-size:0.85em;background:rgba(126,166,168,0.12);color:var(--color-accent-dark);padding:2px 6px;border-radius:4px;">.ai/</code> directory,
             synced via symlinks. Write once, all tools stay in sync.
           </p>
           <div class="oss-meta">
@@ -951,16 +1105,16 @@
             </div>
             <div class="oss-meta-row">
               <span class="oss-meta-key">Status</span>
-              <span class="oss-meta-val">Active — v3.0.0 released</span>
+              <span class="oss-meta-val">Active, v2.0.0 roadmap in progress</span>
             </div>
             <div class="oss-meta-row">
-              <span class="oss-meta-key">Supports</span>
-              <span class="oss-meta-val">Claude Code · Gemini CLI · Antigravity · GitHub Copilot</span>
+              <span class="oss-meta-key">v2.0</span>
+              <span class="oss-meta-val">Knowledge layer, MCP stdio server, codebase scanner, git hooks</span>
             </div>
           </div>
           <div style="display:flex;gap:12px;margin-top:24px;">
             <a href="https://www.npmjs.com/package/@nbslabs/dotai" target="_blank" rel="noopener" class="btn-accent">npm Registry</a>
-            <a href="https://github.com/nbslabs/dotai-cli" target="_blank" rel="noopener" class="btn-outline">GitHub</a>
+            <a href="https://github.com/nbslabs/dotai-cli" target="_blank" rel="noopener" class="btn-outline">View on GitHub</a>
           </div>
         </div>
         <div class="oss-code-panel">
@@ -969,7 +1123,7 @@
           <span class="comment"># initialise in your project</span><br>
           <span class="cmd">dotai init</span><br><br>
           <span class="comment"># all AI tool configs now live in .ai/</span><br>
-          <span class="comment"># CLAUDE.md, AGENTS.md, GEMINI.md → synced</span><br><br>
+          <span class="comment"># CLAUDE.md, AGENTS.md, GEMINI.md - synced</span><br><br>
           <span class="kw">.ai/</span><br>
           &nbsp;&nbsp;<span class="kw">contexts/</span><br>
           &nbsp;&nbsp;<span class="kw">knowledge/</span><br>
@@ -978,207 +1132,346 @@
         </div>
       </div>
 
-      <!-- Other projects -->
+      <!-- Additional Projects -->
       <div class="reveal">
-        <p class="section-label" style="margin-bottom:24px;">Also in Development</p>
-        <div class="oss-projects-list">
-          <div class="oss-project-item">
+        <p class="section-label" style="margin-bottom:24px;">Research-Driven Projects</p>
+        <div class="oss-projects-grid">
+          <div class="oss-project-card">
+            <span class="proj-tag">Code Intelligence</span>
             <h4>WikiForge</h4>
-            <p>AI-native code documentation platform. Generates interactive wikis from codebases via an MCP server.</p>
+            <p>AI-native code documentation platform that generates interactive wikis from codebases via an MCP server. Research area: automated code comprehension and documentation synthesis.</p>
           </div>
-          <div class="oss-project-item">
+          <div class="oss-project-card">
+            <span class="proj-tag">Knowledge Graphs</span>
             <h4>codeograph</h4>
-            <p>Code Knowledge Graph MCP server using SQLite and Tree-sitter to reduce AI agent hallucinations.</p>
+            <p>Code Knowledge Graph MCP server using SQLite and Tree-sitter to reduce AI agent hallucinations. Research area: structural code representation, graph-based retrieval for LLM grounding.</p>
           </div>
-          <div class="oss-project-item">
-            <h4>tracely</h4>
-            <p>A sidebar navigator for AI chats. Easily jump to any prompt, rename messages, and manage long conversations in ChatGPT, Gemini, and Claude.</p>
+          <div class="oss-project-card">
+            <span class="proj-tag">Conversational AI</span>
+            <h4>ConvoCart</h4>
+            <p>AI-powered conversational commerce agent for e-commerce platforms (Shopify, WooCommerce, Meta messaging). Research area: domain-specific AI agents, multi-platform integration.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Audience ────────────────────────────────────────────── -->
-  <section id="audience">
+  <!-- How We Work -->
+  <section id="how-we-work">
     <div class="section-inner">
       <div class="section-header">
-        <p class="section-label">Who We Serve</p>
-        <h2 class="section-heading">Built for Every Stage of the Journey</h2>
-        <p class="section-subtext">nbslabs programs are designed for four primary audiences — from first-time coders to global open-source contributors.</p>
+        <p class="section-label">How We Work</p>
+        <h2 class="section-heading">A Lab That Ships Production Software</h2>
+        <p class="section-subtext">
+          nbslabs is not structured like a traditional company or educational nonprofit. It operates
+          like a research lab that happens to ship production software.
+        </p>
       </div>
 
-      <div class="audience-grid">
-        <div class="audience-card reveal">
-          <span class="audience-emoji">🧒</span>
-          <h3>Young Coders (6–15)</h3>
-          <p>Kids Coding Club with Scratch, Python, and JavaScript. Creativity-first curriculum. Junior mentor pathways for alumni.</p>
+      <div class="workflow-grid">
+        <div class="workflow-card reveal">
+          <span class="workflow-number">01</span>
+          <h3>Research, Build, Release, Write</h3>
+          <p>We identify a problem, research it deeply, build a tool that embodies our findings, release it as open source, and publish our learnings. The cycle then repeats.</p>
         </div>
-        <div class="audience-card reveal">
-          <span class="audience-emoji">🎓</span>
-          <h3>University Students</h3>
-          <p>Open-source contributions, mentorship matching, and community workshops — bridging academic CS with production engineering.</p>
+        <div class="workflow-card reveal">
+          <span class="workflow-number">02</span>
+          <h3>Small Team, High Output</h3>
+          <p>We intentionally stay small. A focused team working on carefully chosen problems produces better work than a large organization spreading itself thin.</p>
         </div>
-        <div class="audience-card reveal">
-          <span class="audience-emoji">👨‍💻</span>
-          <h3>Junior Developers</h3>
-          <p>AI-powered workshops, vibe coding sessions, advanced bootcamps. Practical skill acceleration alongside a day job.</p>
+        <div class="workflow-card reveal">
+          <span class="workflow-number">03</span>
+          <h3>Community Through Contribution</h3>
+          <p>We build community by building things together, not by selling access to knowledge. Open issues, pull requests, and technical discussions are how relationships form.</p>
         </div>
-        <div class="audience-card reveal">
-          <span class="audience-emoji">🌍</span>
-          <h3>Open-Source Community</h3>
-          <p>Production-quality tools, documented contribution pathways, published npm packages under @nbslabs.</p>
+        <div class="workflow-card reveal">
+          <span class="workflow-number">04</span>
+          <h3>Knowledge Sharing, Not Products</h3>
+          <p>We occasionally run workshops and publish educational content, but these are byproducts of our research and building, not our core business.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Mission & Values ────────────────────────────────────── -->
-  <section id="mission">
+  <!-- Mission & Values -->
+  <section id="values">
     <div class="section-inner">
       <div class="section-header">
-        <p class="section-label">Mission & Values</p>
+        <p class="section-label">Mission and Values</p>
         <h2 class="section-heading">Why nbslabs Exists</h2>
         <p class="section-subtext">
-          World-class software talent is not a function of geography or institution — it is a function
-          of environment, exposure, and community. Bangladesh has a rapidly growing pool of CS graduates.
-          nbslabs turns that potential into production-ready engineers.
+          To advance the state of AI tooling, algorithms, and applied intelligence through open-source
+          engineering and original research, making our work freely available so that developers,
+          researchers, and organizations worldwide can build on top of it.
         </p>
       </div>
 
       <div class="values-grid">
         <div class="value-card reveal">
-          <span class="v-icon">🌟</span>
-          <h4>Openness</h4>
-          <p>Knowledge is a public good. All resources and tooling are open-source and free by default. Proprietary lock-in is a bug, not a feature.</p>
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h4>Research First</h4>
+          <p>Every project begins with a question worth answering, not a course worth selling. Our north star is original contribution to the field.</p>
         </div>
         <div class="value-card reveal">
-          <span class="v-icon">🤝</span>
-          <h4>Community</h4>
-          <p>Learning is inherently social. nbslabs fosters supportive, inclusive networks where collaboration replaces competition.</p>
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="6" y1="1" x2="6" y2="4" stroke-linecap="round"/>
+              <line x1="10" y1="1" x2="10" y2="4" stroke-linecap="round"/>
+              <line x1="14" y1="1" x2="14" y2="4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h4>Open by Default</h4>
+          <p>Every tool, dataset, model, and paper we produce is open-source. Knowledge compounds when it is shared.</p>
         </div>
         <div class="value-card reveal">
-          <span class="v-icon">🚀</span>
-          <h4>Innovation</h4>
-          <p>The industry evolves fast. From AI pair-programming to agentic pipelines, we embrace cutting-edge practices early.</p>
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="12" y1="22.08" x2="12" y2="12" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h4>Ship Real Artifacts</h4>
+          <p>Research that lives only in notebooks is incomplete. We ship production-grade tools that people depend on.</p>
         </div>
         <div class="value-card reveal">
-          <span class="v-icon">♿</span>
-          <h4>Accessibility</h4>
-          <p>Geography and economic background should not determine access to world-class software education.</p>
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h4>Depth Over Breadth</h4>
+          <p>We go deep on problems that matter. Rigorous understanding of fundamentals, algorithms, and systems is non-negotiable.</p>
         </div>
         <div class="value-card reveal">
-          <span class="v-icon">⚖️</span>
-          <h4>Ethics</h4>
-          <p>Technical excellence without ethical grounding is dangerous. We cultivate engineers who consider the societal impact of what they build.</p>
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12" stroke-linecap="round"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h4>Global Impact, Local Roots</h4>
+          <p>Proudly based in Bangladesh, aiming to demonstrate that world-class research and engineering can originate from anywhere.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Get Involved ────────────────────────────────────────── -->
+  <!-- Technology Philosophy -->
+  <section id="philosophy">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Technology Philosophy</p>
+        <h2 class="section-heading">Principles That Guide Our Engineering</h2>
+      </div>
+
+      <div class="philosophy-grid">
+        <div class="philosophy-card reveal">
+          <h3><span class="ph-dot"></span>AI as Research Subject and Building Tool</h3>
+          <p>We study AI systems, and we use AI systems to accelerate our own research and engineering. This dual relationship gives us practical insight that pure research labs and pure product teams often lack.</p>
+        </div>
+        <div class="philosophy-card reveal">
+          <h3><span class="ph-dot"></span>Algorithms Matter</h3>
+          <p>In an era of "just prompt the model," we maintain that deep understanding of algorithms, data structures, and computational complexity is what separates engineers who build reliable systems from those who build fragile demos.</p>
+        </div>
+        <div class="philosophy-card reveal">
+          <h3><span class="ph-dot"></span>Interoperability as Design Principle</h3>
+          <p>Our tools are built to work across ecosystems, not to create vendor lock-in. The AI tooling landscape is healthiest when tools compose rather than compete.</p>
+        </div>
+        <div class="philosophy-card reveal">
+          <h3><span class="ph-dot"></span>Reproducibility is Non-Negotiable</h3>
+          <p>Every experiment, benchmark, and claim we publish comes with code, data, and instructions to reproduce it. If it cannot be reproduced, it is not research.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Roadmap -->
+  <section id="roadmap">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Strategic Roadmap</p>
+        <h2 class="section-heading">Building for the Long Term</h2>
+      </div>
+
+      <div class="roadmap-grid">
+        <div class="roadmap-card reveal">
+          <div class="roadmap-horizon">Horizon 1</div>
+          <h3>Foundation (2025)</h3>
+          <div class="roadmap-items">
+            <div class="roadmap-item"><div class="roadmap-dot"></div><span>Ship dotai v2.0.0 with knowledge layer and MCP stdio server</span></div>
+            <div class="roadmap-item"><div class="roadmap-dot"></div><span>Publish first technical reports on AI-native developer tooling patterns</span></div>
+            <div class="roadmap-item"><div class="roadmap-dot"></div><span>Establish the lab's open-source contribution workflow and release cadence</span></div>
+            <div class="roadmap-item"><div class="roadmap-dot"></div><span>Launch WikiForge and codeograph as public alpha releases</span></div>
+          </div>
+        </div>
+        <div class="roadmap-card current reveal">
+          <div class="roadmap-horizon">Horizon 2</div>
+          <h3>Research Momentum (2026)</h3>
+          <div class="roadmap-items">
+            <div class="roadmap-item"><div class="roadmap-dot"></div><span>Publish original research in applied AI, code intelligence, and agent architectures</span></div>
+            <div class="roadmap-item"><div class="roadmap-dot"></div><span>Release 3+ new open-source tools from active research tracks</span></div>
+            <div class="roadmap-item"><div class="roadmap-dot"></div><span>Build a network of research collaborators, academic and independent</span></div>
+            <div class="roadmap-item"><div class="roadmap-dot"></div><span>Establish nbslabs as a recognized contributor in AI-native tooling</span></div>
+          </div>
+        </div>
+        <div class="roadmap-card reveal">
+          <div class="roadmap-horizon">Horizon 3</div>
+          <h3>Lab at Scale (2027+)</h3>
+          <div class="roadmap-items">
+            <div class="roadmap-item"><div class="roadmap-dot"></div><span>Sustain a portfolio of 10+ actively maintained open-source projects</span></div>
+            <div class="roadmap-item"><div class="roadmap-dot"></div><span>Publish research cited and built upon by the broader community</span></div>
+            <div class="roadmap-item"><div class="roadmap-dot"></div><span>Attract research grants, sponsorships, and industry partnerships</span></div>
+            <div class="roadmap-item"><div class="roadmap-dot"></div><span>Mentor emerging researchers through collaborative project work</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Get Involved -->
   <section id="involve">
     <div class="section-inner">
       <div class="section-header">
         <p class="section-label">Get Involved</p>
-        <h2 class="section-heading">A Community Built by Builders, for Builders</h2>
-        <p class="section-subtext">Four ways to engage with nbslabs — pick the one that fits where you are right now.</p>
+        <h2 class="section-heading">An Open Lab, Built for Collaboration</h2>
+        <p class="section-subtext">nbslabs is an open lab. If you are interested in what we are building, there are concrete ways to participate.</p>
       </div>
 
       <div class="involve-grid">
         <div class="involve-card reveal">
-          <span class="i-icon">🔔</span>
-          <h3>Join</h3>
-          <p>Sign up to receive workshop invitations, community updates, and early access to new tools.</p>
-          <a href="#contact" class="involve-link">Sign up →</a>
-        </div>
-        <div class="involve-card reveal">
-          <span class="i-icon">🛠</span>
+          <div class="involve-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
           <h3>Contribute</h3>
           <p>Fork any project on GitHub, pick an open issue, and open a pull request. All skill levels welcome.</p>
-          <a href="https://github.com/nbslabs" target="_blank" rel="noopener" class="involve-link">View on GitHub →</a>
+          <a href="https://github.com/nbslabs" target="_blank" rel="noopener" class="involve-link">View on GitHub</a>
         </div>
         <div class="involve-card reveal">
-          <span class="i-icon">🎓</span>
-          <h3>Mentor</h3>
-          <p>If you're an industry practitioner, apply to the mentorship program and shape the career of a junior developer.</p>
-          <a href="#contact" class="involve-link">Apply to mentor →</a>
+          <div class="involve-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Collaborate</h3>
+          <p>If you are a researcher or engineer working on related problems, reach out. We seek co-authors and collaborators for research and tooling projects.</p>
+          <a href="#contact" class="involve-link">Reach out</a>
         </div>
         <div class="involve-card reveal">
-          <span class="i-icon">💛</span>
+          <div class="involve-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Use Our Tools</h3>
+          <p>Install our packages, use them in your workflow, file issues, and give feedback. Users who push our tools to their limits are invaluable.</p>
+          <a href="https://www.npmjs.com/package/@nbslabs/dotai" target="_blank" rel="noopener" class="involve-link">Browse on npm</a>
+        </div>
+        <div class="involve-card reveal">
+          <div class="involve-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
           <h3>Sponsor</h3>
-          <p>Help sustain free programs through financial sponsorship or in-kind contributions.</p>
-          <a href="/contact" class="involve-link">Get in touch →</a>
+          <p>Help sustain open-source development and independent research through financial sponsorship.</p>
+          <a href="#contact" class="involve-link">Get in touch</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Contact ──────────────────────────────────────────────── -->
+  <!-- Contact -->
   <section id="contact">
     <div class="section-inner" style="text-align:center;">
       <p class="section-label" style="text-align:center;">Get in Touch</p>
-      <h2 class="section-heading">Find Us Here</h2>
+      <h2 class="section-heading">Connect with the Lab</h2>
       <p class="section-subtext">
-        Have a question, want to collaborate, or just say hello?
+        Have a question, want to collaborate, or interested in our research?
         Reach out through any of these channels.
       </p>
       <div class="contact-list">
         <a href="mailto:nbslabs.dev@gmail.com" class="contact-item reveal">
-          <div class="contact-icon">✉️</div>
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="22,6 12,13 2,6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
           <div class="contact-detail">
             <div class="contact-platform">Email</div>
             <div class="contact-handle">nbslabs.dev@gmail.com</div>
           </div>
         </a>
-        <a href="https://facebook.com/nbslabs" target="_blank" rel="noopener" class="contact-item reveal">
-          <div class="contact-icon">📘</div>
-          <div class="contact-detail">
-            <div class="contact-platform">Facebook</div>
-            <div class="contact-handle">facebook.com/nbslabs</div>
-          </div>
-        </a>
         <a href="https://github.com/nbslabs" target="_blank" rel="noopener" class="contact-item reveal">
-          <div class="contact-icon">🐙</div>
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
           <div class="contact-detail">
             <div class="contact-platform">GitHub</div>
             <div class="contact-handle">github.com/nbslabs</div>
+          </div>
+        </a>
+        <a href="https://facebook.com/nbslabs" target="_blank" rel="noopener" class="contact-item reveal">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-platform">Facebook</div>
+            <div class="contact-handle">facebook.com/nbslabs</div>
           </div>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <!-- Footer -->
   <footer>
     <div class="footer-inner">
       <div>
         <div class="footer-logo">
           <span class="nbs">nbs</span><span class="labs">labs</span>
         </div>
-        <div class="footer-tagline">Empowering Developers in Bangladesh</div>
+        <div class="footer-tagline">"Research it. Build it. Open-source it."</div>
       </div>
 
       <div class="footer-links">
         <a href="https://github.com/nbslabs" target="_blank" rel="noopener">GitHub</a>
         <a href="https://www.npmjs.com/package/@nbslabs/dotai" target="_blank" rel="noopener">npm</a>
-        <a href="#programs">Programs</a>
+        <a href="#research">Research</a>
         <a href="#oss">Open Source</a>
-        <a href="#mission">Mission</a>
+        <a href="/blog/">Blog</a>
+        <a href="#values">Values</a>
       </div>
 
-      <div class="footer-copy">© 2025 nbslabs · Dhaka, Bangladesh</div>
+      <div class="footer-copy">2025 nbslabs - Dhaka, Bangladesh</div>
     </div>
   </footer>
 
   <script>
-    // ── Nav scroll shadow
+    // Nav scroll shadow
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
       navbar.classList.toggle('scrolled', window.scrollY > 20);
     });
 
-    // ── Mobile nav toggle
+    // Mobile nav toggle
     const hamburger = document.getElementById('hamburger');
     const navLinks  = document.getElementById('navLinks');
     hamburger.addEventListener('click', () => {
@@ -1191,7 +1484,7 @@
       a.addEventListener('click', () => navLinks.classList.remove('open'));
     });
 
-    // ── Scroll reveal
+    // Scroll reveal
     const revealEls = document.querySelectorAll('.reveal');
     const observer  = new IntersectionObserver(entries => {
       entries.forEach(e => {
@@ -1203,7 +1496,7 @@
     }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
     revealEls.forEach(el => observer.observe(el));
 
-    // ── Smooth scroll for same-page anchors
+    // Smooth scroll for same-page anchors
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', function(e) {
         const target = document.querySelector(this.getAttribute('href'));

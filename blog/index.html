@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - nbslabs</title>
+  <meta name="description" content="Read the latest from nbslabs - research notes, technical reports, and open-source updates from the lab.">
+  <meta property="og:title" content="Blog - nbslabs">
+  <meta property="og:description" content="Research notes, technical reports, and open-source updates from the lab.">
+  <meta property="og:url" content="https://nbslabs.dev/blog/">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600;7..72,700&display=swap" as="style" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600;7..72,700&family=Nunito:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/blog.css?v=2">
+</head>
+<body class="blog-page">
+
+  <!-- ── Navigation ─────────────────────────────────────────── -->
+  <nav id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="logo"><span class="nbs">nbs</span><span class="labs">labs</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#research">Research</a></li>
+        <li><a href="/#oss">Open Source</a></li>
+        <li><a href="/#values">Values</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/#contact" class="nav-cta">Get in Touch</a></li>
+      </ul>
+      <div class="nav-hamburger" id="hamburger" aria-label="Toggle menu" role="button" tabindex="0">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Hero ───────────────────────────────────────────────── -->
+  <header class="blog-hero">
+    <div class="blog-hero-inner">
+      <h1 id="blogHeroTitle">nbslabs Blog</h1>
+      <p id="blogHeroTagline">Research notes, technical reports, and open-source updates from the lab.</p>
+    </div>
+  </header>
+
+  <!-- ── Filter Bar ─────────────────────────────────────────── -->
+  <div class="blog-filter-bar" role="search" aria-label="Filter blog posts">
+    <div class="blog-filter-inner">
+      <input
+        type="text"
+        id="blogSearch"
+        class="blog-search-input"
+        placeholder="Search posts…"
+        aria-label="Search blog posts"
+      />
+      <select id="blogCategory" class="blog-category-select" aria-label="Filter by category">
+        <option value="">All categories</option>
+      </select>
+      <div id="blogTagChips" class="blog-tag-chips" role="group" aria-label="Filter by tags"></div>
+      <button id="blogClearFilters" class="blog-clear-filters">Clear filters</button>
+    </div>
+  </div>
+
+  <!-- ── Post Card Grid ─────────────────────────────────────── -->
+  <main class="blog-grid-container">
+    <div id="blogCardGrid" class="blog-card-grid" role="feed" aria-label="Blog posts">
+      <!-- Cards are injected by JS -->
+    </div>
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <footer style="background: #4A7A7D; padding: 32px 80px; color: rgba(255,255,255,0.8);">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap;">
+      <div>
+        <div class="logo" style="color: #fff;">
+          <span class="nbs" style="color: #fff;">nbs</span><span class="labs" style="color: rgba(255,255,255,0.8);">labs</span>
+        </div>
+        <div style="font-size: 0.8125rem; color: rgba(255,255,255,0.5); margin-top: 4px; font-style: italic;">"Research it. Build it. Open-source it."</div>
+      </div>
+      <div style="display: flex; gap: 24px;">
+        <a href="/" style="font-size: 0.875rem; color: rgba(255,255,255,0.65); transition: color 0.2s;">Home</a>
+        <a href="/blog/" style="font-size: 0.875rem; color: rgba(255,255,255,0.65); transition: color 0.2s;">Blog</a>
+        <a href="https://github.com/nbslabs" target="_blank" rel="noopener" style="font-size: 0.875rem; color: rgba(255,255,255,0.65); transition: color 0.2s;">GitHub</a>
+      </div>
+      <div style="font-size: 0.8125rem; color: rgba(255,255,255,0.4);">2025 nbslabs - Dhaka, Bangladesh</div>
+    </div>
+  </footer>
+
+  <script src="js/blog-core.js"></script>
+  <script src="js/blog-listing.js"></script>
+</body>
+</html>

@@ -36,6 +36,7 @@ Do NOT skip this step. Every non-obvious discovery must be persisted as soon as 
 as a side effect of your work, not as a separate step the user requests.
 
 ### What triggers auto-persist:
+
 - You read a file and notice a non-obvious constraint or side effect
 - You discover a hidden dependency between modules
 - You fix or debug a bug and find the root cause was subtle
@@ -45,15 +46,18 @@ as a side effect of your work, not as a separate step the user requests.
 - You discover something that contradicts or is missing from the current knowledge base
 
 ### How to persist (in order of preference):
+
 1. **MCP tool** — call \`knowledge_append\` directly (no user interaction needed)
 2. **Shell command** — run \`dotai knowledge append --gotchas --finding "..." --agent "your-name"\`
 
 ### What NOT to persist:
+
 - Information already in the knowledge base (check first)
 - Trivially obvious things readable from the code itself
 - Task-specific context that won't help future sessions
 
 ### Persist format:
+
 - Be specific: include file names, function names, line references
 - Explain WHY, not just WHAT
 - Keep each finding under 3 sentences
@@ -65,14 +69,14 @@ as a side effect of your work, not as a separate step the user requests.
 
 If the dotai knowledge MCP server is configured, you have access to these tools:
 
-| Tool | Description |
-|------|-------------|
-| \`knowledge_query\` | Search knowledge base by keyword |
-| \`knowledge_get_module\` | Get full summary of a specific module |
-| \`knowledge_list_modules\` | List all indexed modules |
-| \`knowledge_recent_changes\` | Get recent codebase changes |
-| \`knowledge_append\` | **Write back** a finding to persist across sessions |
-| \`knowledge_explore\` | Read source files for deep analysis |
+| Tool                         | Description                                               |
+| ---------------------------- | --------------------------------------------------------- |
+| \`knowledge_query\`          | Search knowledge base by keyword                          |
+| \`knowledge_get_module\`     | Get full summary of a specific module                     |
+| \`knowledge_list_modules\`   | List all indexed modules                                  |
+| \`knowledge_recent_changes\` | Get recent codebase changes                               |
+| \`knowledge_append\`         | **Write back** a finding to persist across sessions       |
+| \`knowledge_explore\`        | Read source files for deep analysis                       |
 | \`knowledge_populate_ai_md\` | Update AI.md project sections with codebase-specific info |
 
 ---
@@ -114,10 +118,10 @@ Page sections in DOM order: `#home` → `#programs` → `#oss` → `#audience` �
 
 ## Key Commands
 
-| Action | Command |
-|--------|---------|
-| Preview locally | Open `index.html` in browser (no server needed) |
-| Deploy | `git push origin main` — GitHub Pages auto-deploys |
+| Action            | Command                                                     |
+| ----------------- | ----------------------------------------------------------- |
+| Preview locally   | Open `index.html` in browser (no server needed)             |
+| Deploy            | `git push origin main` — GitHub Pages auto-deploys          |
 | Update AI configs | Edit `.ai/AI.md` — dotai symlinks propagate to all AI tools |
 
 ## Important Constraints
@@ -139,7 +143,6 @@ Page sections in DOM order: `#home` → `#programs` → `#oss` → `#audience` �
 - Sponsor "Get in touch" links to `/contact` — not `mailto:`
 - Mobile nav: `.nav-links` hidden at ≤768px, toggled via `.open` class — restructuring breaks mobile
 - Decorative SVG network in hero must stay ≤15% opacity — must not compete with text
-
 
 ## SDD Toolkit
 

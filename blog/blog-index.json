@@ -1,0 +1,22 @@
+{
+  "posts": [
+    {
+      "id": "getting-started-with-dotai",
+      "title": "Getting Started with dotai - AI-Powered Development Workflows",
+      "description": "A comprehensive guide to setting up dotai in your projects, configuring AI tool integrations, and supercharging your development workflow with persistent context.",
+      "author": "nbslabs",
+      "publishedAt": "2026-04-18",
+      "updatedAt": "",
+      "category": "Engineering",
+      "tags": ["dotai", "open-source", "developer-tools", "ai"],
+      "status": "published",
+      "filePath": "posts/getting-started-with-dotai.md",
+      "coverImage": {
+        "src": "assets/covers/getting-started-with-dotai.png",
+        "alt": "Abstract illustration of AI-powered developer workflows with geometric circuit patterns"
+      },
+      "inlineImages": [],
+      "readingTimeMinutes": 5
+    }
+  ]
+}
