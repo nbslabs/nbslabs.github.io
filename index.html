@@ -457,7 +457,7 @@
 
     .oss-projects-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 20px;
     }
 
@@ -1105,14 +1105,15 @@
             </div>
             <div class="oss-meta-row">
               <span class="oss-meta-key">Status</span>
-              <span class="oss-meta-val">Active, v2.0.0 roadmap in progress</span>
+              <span class="oss-meta-val">Active, v3.1.0</span>
             </div>
             <div class="oss-meta-row">
-              <span class="oss-meta-key">v2.0</span>
-              <span class="oss-meta-val">Knowledge layer, MCP stdio server, codebase scanner, git hooks</span>
+              <span class="oss-meta-key">Includes</span>
+              <span class="oss-meta-val">Resource management, SDD workflow, Knowledge Base, MCP server support</span>
             </div>
           </div>
           <div style="display:flex;gap:12px;margin-top:24px;">
+            <a href="/projects/dotai.html" class="btn-primary">Learn More</a>
             <a href="https://www.npmjs.com/package/@nbslabs/dotai" target="_blank" rel="noopener" class="btn-accent">npm Registry</a>
             <a href="https://github.com/nbslabs/dotai-cli" target="_blank" rel="noopener" class="btn-outline">View on GitHub</a>
           </div>
@@ -1134,23 +1135,26 @@
 
       <!-- Additional Projects -->
       <div class="reveal">
-        <p class="section-label" style="margin-bottom:24px;">Research-Driven Projects</p>
+        <p class="section-label" style="margin-bottom:24px;">Additional Projects</p>
         <div class="oss-projects-grid">
-          <div class="oss-project-card">
-            <span class="proj-tag">Code Intelligence</span>
-            <h4>WikiForge</h4>
-            <p>AI-native code documentation platform that generates interactive wikis from codebases via an MCP server. Research area: automated code comprehension and documentation synthesis.</p>
-          </div>
-          <div class="oss-project-card">
-            <span class="proj-tag">Knowledge Graphs</span>
-            <h4>codeograph</h4>
-            <p>Code Knowledge Graph MCP server using SQLite and Tree-sitter to reduce AI agent hallucinations. Research area: structural code representation, graph-based retrieval for LLM grounding.</p>
-          </div>
-          <div class="oss-project-card">
-            <span class="proj-tag">Conversational AI</span>
-            <h4>ConvoCart</h4>
-            <p>AI-powered conversational commerce agent for e-commerce platforms (Shopify, WooCommerce, Meta messaging). Research area: domain-specific AI agents, multi-platform integration.</p>
-          </div>
+          <a href="/projects/difflense.html" class="oss-project-card" style="display:block;text-decoration:none;color:inherit;">
+            <span class="proj-tag">Developer Tool</span>
+            <h4>DiffLense</h4>
+            <p>A clean, secure, privacy-focused git diff viewer that processes everything client-side. Upload a diff file or paste raw diff text to explore changes with side-by-side and unified views, file navigation, and syntax highlighting.</p>
+            <span style="display:inline-block;margin-top:12px;font-size:0.85rem;font-weight:600;color:var(--color-accent-dark);">Learn more &rarr;</span>
+          </a>
+          <a href="/projects/ielts30.html" class="oss-project-card" style="display:block;text-decoration:none;color:inherit;">
+            <span class="proj-tag">Education</span>
+            <h4>ielts30</h4>
+            <p>A structured, interactive 30-day IELTS study planner with progress tracking, built-in practice timers, score logging, and mistake analysis. 100% privacy-first, all data stays in the browser.</p>
+            <span style="display:inline-block;margin-top:12px;font-size:0.85rem;font-weight:600;color:var(--color-accent-dark);">Learn more &rarr;</span>
+          </a>
+          <a href="/projects/dhaka-city-ludo.html" class="oss-project-card" style="display:block;text-decoration:none;color:inherit;">
+            <span class="proj-tag">Game</span>
+            <h4>Dhaka City Ludo</h4>
+            <p>A Dhaka City themed digital Ludo board game built as a browser-based application with 3D graphics, procedural audio, and rooftop exploration mode.</p>
+            <span style="display:inline-block;margin-top:12px;font-size:0.85rem;font-weight:600;color:var(--color-accent-dark);">Learn more &rarr;</span>
+          </a>
         </div>
       </div>
     </div>
@@ -1310,7 +1314,7 @@
             <div class="roadmap-item"><div class="roadmap-dot"></div><span>Ship dotai v2.0.0 with knowledge layer and MCP stdio server</span></div>
             <div class="roadmap-item"><div class="roadmap-dot"></div><span>Publish first technical reports on AI-native developer tooling patterns</span></div>
             <div class="roadmap-item"><div class="roadmap-dot"></div><span>Establish the lab's open-source contribution workflow and release cadence</span></div>
-            <div class="roadmap-item"><div class="roadmap-dot"></div><span>Launch WikiForge and codeograph as public alpha releases</span></div>
+            <div class="roadmap-item"><div class="roadmap-dot"></div><span>Grow the open-source project portfolio with new developer tools and research-driven applications</span></div>
           </div>
         </div>
         <div class="roadmap-card current reveal">
@@ -1403,7 +1407,7 @@
         Reach out through any of these channels.
       </p>
       <div class="contact-list">
-        <a href="mailto:nbslabs.dev@gmail.com" class="contact-item reveal">
+        <a href="mailto:contact@nbslabs.dev" class="contact-item reveal">
           <div class="contact-icon">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1412,7 +1416,7 @@
           </div>
           <div class="contact-detail">
             <div class="contact-platform">Email</div>
-            <div class="contact-handle">nbslabs.dev@gmail.com</div>
+            <div class="contact-handle">contact@nbslabs.dev</div>
           </div>
         </a>
         <a href="https://github.com/nbslabs" target="_blank" rel="noopener" class="contact-item reveal">

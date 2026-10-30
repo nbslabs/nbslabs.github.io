@@ -86,15 +86,17 @@ The flagship project. dotai is a CLI tool that solves a painful problem in AI-au
 
 ## **Additional Projects**
 
-The nbslabs project portfolio extends beyond dotai into several research-driven tools:
+The nbslabs project portfolio extends beyond dotai into several open-source tools and applications:
 
-* **WikiForge** - AI-native code documentation platform that generates interactive wikis from codebases via an MCP server. Research area: automated code comprehension and documentation synthesis.
+* **DiffLense** ([difflense](https://github.com/nbslabs/difflense)) - A clean, secure, privacy-focused git diff viewer that processes everything client-side. Upload a diff file or paste raw diff text to explore changes with a structured view. Features side-by-side and unified diff views, file navigation sidebar, syntax highlighting, and responsive design. Live at [difflense.nbslabs.dev](https://difflense.nbslabs.dev). License: GPL-3.0.
 
-* **codeograph** - A Code Knowledge Graph MCP server using SQLite and Tree-sitter to reduce AI agent hallucinations. Research area: structural code representation, graph-based retrieval for LLM grounding.
+* **ielts30** ([ielts30](https://github.com/nbslabs/ielts30)) - A structured, interactive 30-day IELTS study planner with progress tracking, built-in practice timers, score logging, and mistake analysis. Designed for candidates targeting a strong band score with a focused 4-5 hours daily routine. 100% privacy-first, all data stays in the browser. Live at [ielts30.nbslabs.dev](https://ielts30.nbslabs.dev).
 
-* **ConvoCart** - AI-powered conversational commerce agent for e-commerce platforms (Shopify, WooCommerce, Meta messaging). Research area: domain-specific AI agents, multi-platform integration, conversational UX.
+* **Dhaka City Ludo** ([dhaka-city-ludo](https://github.com/nbslabs/dhaka-city-ludo)) - A Dhaka City themed digital Ludo board game built as a browser-based application. Live at [dhakaludo.nbslabs.dev](https://dhakaludo.nbslabs.dev).
 
-Each project begins as a research question and graduates into a tool when the answer proves useful.
+* **nbslabs.github.io** ([nbslabs.github.io](https://github.com/nbslabs/nbslabs.github.io)) - The official nbslabs organization website source code, serving as the lab's public-facing site at [nbslabs.dev](https://nbslabs.dev).
+
+Each project begins as a research question or a practical need and graduates into a tool when the answer proves useful.
 
 # **6. How We Work**
 
@@ -136,7 +138,7 @@ We occasionally run workshops and publish educational content, but these are byp
 
 * Establish the lab's open-source contribution workflow and release cadence.
 
-* Launch WikiForge and codeograph as public alpha releases.
+* Grow the open-source project portfolio with new developer tools and research-driven applications.
 
 ### **Horizon 2 - Research Momentum (2026)**
 

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dotai - One .ai/ Folder, All AI Tools in Sync | nbslabs</title>
+  <meta name="description" content="dotai unifies AI coding tool configurations under a single .ai/ directory. Claude Code, Gemini CLI, Antigravity, and GitHub Copilot - write once, all tools stay in sync via symlinks.">
+  <meta name="keywords" content="dotai, AI config, claude code, gemini cli, antigravity, github copilot, symlink, developer tools, nbslabs, open source, npm">
+  <meta property="og:title" content="dotai - One .ai/ Folder, All AI Tools in Sync | nbslabs">
+  <meta property="og:description" content="AI coding tools each expect config in different places. dotai creates a single .ai/ directory as your source of truth and symlinks everything to where each tool expects it.">
+  <meta property="og:url" content="https://nbslabs.dev/projects/dotai">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --color-primary:        #1A1A1A;
+      --color-background:     #F2F2F2;
+      --color-surface:        #FFFFFF;
+      --color-accent:         #7EA6A8;
+      --color-accent-dark:    #4A7A7D;
+      --color-accent-light:   #A8C4C6;
+      --color-secondary:      #8FA8B2;
+      --color-text-primary:   #1A1A1A;
+      --color-text-secondary: #3D3D3D;
+      --color-text-muted:     #9E9E9E;
+      --color-border:         #E8E8E8;
+      --color-border-dark:    #CCCCCC;
+      --font-sans:            'Nunito', sans-serif;
+      --font-mono:            'JetBrains Mono', monospace;
+      --shadow-sm:  0 1px 4px rgba(0,0,0,0.06);
+      --shadow-md:  0 2px 12px rgba(0,0,0,0.08);
+      --shadow-lg:  0 8px 32px rgba(0,0,0,0.10);
+      --radius-sm:  6px;
+      --radius-md:  10px;
+      --radius-lg:  12px;
+      --radius-full: 999px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--font-sans); background: var(--color-background);
+      color: var(--color-text-primary); line-height: 1.5; overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    ul { list-style: none; }
+    code {
+      font-family: var(--font-mono); font-size: 0.85em;
+      background: rgba(126,166,168,0.12); color: var(--color-accent-dark);
+      padding: 2px 6px; border-radius: 4px;
+    }
+
+    /* Navigation */
+    nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(242,242,242,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border); transition: box-shadow 0.3s; }
+    nav.scrolled { box-shadow: var(--shadow-md); }
+    .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 80px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-family: var(--font-sans); font-size: 1.5rem; letter-spacing: -0.01em; line-height: 1; }
+    .logo .nbs { font-weight: 800; color: var(--color-primary); }
+    .logo .labs { font-weight: 200; color: var(--color-primary); }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--color-text-secondary); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--color-accent-dark); }
+    .nav-cta { background: var(--color-primary); color: #fff !important; padding: 8px 20px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.875rem; transition: background 0.2s !important; }
+    .nav-cta:hover { background: var(--color-text-secondary) !important; }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--color-primary); border-radius: 2px; transition: all 0.3s; }
+
+    /* Hero */
+    .project-hero { position: relative; padding: 120px 80px 80px; background: radial-gradient(ellipse at center, #FFFFFF 40%, #EBEBEB 100%); overflow: hidden; }
+    .project-hero-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+    .project-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-dark); background: rgba(126,166,168,0.12); padding: 5px 14px; border-radius: var(--radius-full); margin-bottom: 20px; }
+    .project-hero h1 { font-size: clamp(2.25rem, 4vw, 3.25rem); font-weight: 700; line-height: 1.15; color: var(--color-primary); margin-bottom: 20px; }
+    .project-hero h1 em { font-style: normal; color: var(--color-accent-dark); }
+    .project-hero-desc { font-size: 1.0625rem; color: var(--color-text-secondary); line-height: 1.7; max-width: 520px; margin-bottom: 32px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-meta { display: flex; gap: 16px; margin-top: 20px; flex-wrap: wrap; }
+    .hero-meta-pill { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500; padding: 4px 12px; border-radius: var(--radius-full); background: rgba(126,166,168,0.12); color: var(--color-accent-dark); }
+    .btn-primary { background: var(--color-primary); color: #fff; padding: 11px 26px; border-radius: var(--radius-sm); font-family: var(--font-sans); font-weight: 600; font-size: 0.9rem; border: none; cursor: pointer; transition: background 0.2s; display: inline-block; }
+    .btn-primary:hover { background: var(--color-text-secondary); }
+    .btn-outline { background: transparent; color: var(--color-primary); padding: 10px 26px; border-radius: var(--radius-sm); font-family: var(--font-sans); font-weight: 600; font-size: 0.9rem; border: 1.5px solid var(--color-primary); cursor: pointer; transition: background 0.2s; display: inline-block; }
+    .btn-outline:hover { background: var(--color-border); }
+    .btn-accent { background: var(--color-accent); color: #fff; padding: 11px 26px; border-radius: var(--radius-sm); font-family: var(--font-sans); font-weight: 600; font-size: 0.9rem; border: none; cursor: pointer; transition: background 0.2s; display: inline-block; }
+    .btn-accent:hover { background: var(--color-accent-dark); }
+    .hero-image { border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid var(--color-border); }
+    .hero-image img { width: 100%; height: auto; display: block; }
+
+    /* Section shell */
+    section { padding: 96px 80px; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .section-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-dark); margin-bottom: 12px; }
+    .section-heading { font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 700; color: var(--color-primary); margin-bottom: 16px; line-height: 1.25; }
+    .section-subtext { font-size: 1rem; color: var(--color-text-secondary); max-width: 680px; line-height: 1.7; }
+    .section-header { margin-bottom: 56px; }
+
+    /* The Problem / Solution */
+    #problem { background: var(--color-surface); }
+    .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .problem-panel, .solution-panel {
+      border-radius: var(--radius-md); padding: 32px; font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.8;
+    }
+    .problem-panel {
+      background: #FDF2F2; border: 1px solid #F0D0D0; color: var(--color-text-secondary);
+    }
+    .solution-panel {
+      background: #F2FDF4; border: 1px solid #D0F0D4; color: var(--color-text-secondary);
+    }
+    .panel-label {
+      font-family: var(--font-sans); font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; display: block;
+    }
+    .problem-panel .panel-label { color: #C0504D; }
+    .solution-panel .panel-label { color: #4D9E54; }
+    .problem-panel .file-line { color: var(--color-text-muted); }
+    .problem-panel .comment { color: #C0504D; font-size: 0.75rem; }
+    .solution-panel .link-arrow { color: #4D9E54; }
+    .solution-panel .comment { color: #4D9E54; font-size: 0.75rem; }
+
+    /* Supported Tools */
+    #tools { background: var(--color-background); }
+    .tools-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .tool-card {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-md); padding: 28px 24px; text-align: center;
+      transition: box-shadow 0.25s, transform 0.25s; position: relative; overflow: hidden;
+    }
+    .tool-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--color-accent); }
+    .tool-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .tool-card .tool-id { font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-accent-dark); background: rgba(126,166,168,0.12); padding: 2px 10px; border-radius: var(--radius-full); display: inline-block; margin-bottom: 12px; }
+    .tool-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; color: var(--color-primary); }
+    .tool-card .tool-dir { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--color-text-muted); margin-bottom: 10px; }
+    .tool-card p { font-size: 0.8125rem; color: var(--color-text-secondary); line-height: 1.5; }
+
+    /* Directory structure */
+    #structure { background: var(--color-surface); }
+    .structure-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .structure-panel {
+      background: var(--color-primary); border-radius: var(--radius-md);
+      padding: 32px; font-family: var(--font-mono); font-size: 0.8125rem;
+      color: rgba(255,255,255,0.9); line-height: 1.7;
+    }
+    .structure-panel .dir { color: var(--color-accent-light); }
+    .structure-panel .arrow { color: #8BC48A; }
+    .structure-panel .target { color: rgba(255,255,255,0.5); }
+    .structure-panel .comment { color: rgba(255,255,255,0.3); }
+    .structure-text h3 { font-size: 1.125rem; font-weight: 700; color: var(--color-primary); margin-bottom: 12px; }
+    .structure-text p { font-size: 0.9375rem; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 16px; }
+    .structure-bullets { display: flex; flex-direction: column; gap: 12px; }
+    .structure-bullet { display: flex; gap: 10px; align-items: flex-start; font-size: 0.9rem; color: var(--color-text-secondary); line-height: 1.5; }
+    .sb-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-accent); margin-top: 7px; flex-shrink: 0; }
+
+    /* Commands */
+    #commands { background: var(--color-primary); }
+    #commands .section-label { color: var(--color-accent-light); }
+    #commands .section-heading { color: #fff; }
+    #commands .section-subtext { color: rgba(255,255,255,0.7); }
+    .cmd-categories { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+    .cmd-category {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-md); padding: 28px 24px; transition: background 0.25s;
+    }
+    .cmd-category:hover { background: rgba(255,255,255,0.1); }
+    .cmd-category h3 { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 16px; }
+    .cmd-list { display: flex; flex-direction: column; gap: 8px; }
+    .cmd-item { display: flex; gap: 8px; align-items: baseline; }
+    .cmd-name { font-family: var(--font-mono); font-size: 0.78rem; color: var(--color-accent-light); white-space: nowrap; }
+    .cmd-desc { font-size: 0.78rem; color: rgba(255,255,255,0.5); }
+
+    /* Resource management */
+    #resources { background: var(--color-background); }
+    .resources-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .resource-card {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-md); padding: 28px 24px;
+      transition: box-shadow 0.25s, transform 0.25s; position: relative; overflow: hidden;
+    }
+    .resource-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--color-accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+    .resource-card:hover::after { transform: scaleX(1); }
+    .resource-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .resource-card h3 { font-size: 1.0625rem; font-weight: 700; margin-bottom: 8px; color: var(--color-primary); }
+    .resource-card p { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 14px; }
+    .resource-cmd { font-family: var(--font-mono); font-size: 0.78rem; color: var(--color-accent-dark); background: rgba(126,166,168,0.12); padding: 6px 12px; border-radius: var(--radius-sm); display: inline-block; }
+
+    /* SDD + Knowledge */
+    #sdd { background: var(--color-surface); }
+    .sdd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .sdd-card {
+      border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 32px 28px;
+      background: var(--color-background); transition: box-shadow 0.25s;
+    }
+    .sdd-card:hover { box-shadow: var(--shadow-md); }
+    .sdd-badge { font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-accent-dark); background: rgba(126,166,168,0.12); padding: 3px 10px; border-radius: var(--radius-full); display: inline-block; margin-bottom: 16px; }
+    .sdd-card h3 { font-size: 1.25rem; font-weight: 700; color: var(--color-primary); margin-bottom: 12px; }
+    .sdd-card p { font-size: 0.9rem; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 16px; }
+    .sdd-phases { display: flex; flex-wrap: wrap; gap: 8px; }
+    .sdd-phase { font-family: var(--font-mono); font-size: 0.72rem; padding: 4px 10px; border-radius: var(--radius-full); border: 1px solid var(--color-border); color: var(--color-text-muted); }
+    .sdd-code {
+      background: var(--color-primary); border-radius: var(--radius-sm); padding: 16px 20px;
+      font-family: var(--font-mono); font-size: 0.78rem; color: rgba(255,255,255,0.85); line-height: 1.6;
+    }
+    .sdd-code .comment { color: rgba(255,255,255,0.3); }
+    .sdd-code .cmd { color: var(--color-accent-light); }
+
+    /* Quick start */
+    #quickstart { background: var(--color-background); }
+    .quickstart-panel {
+      background: var(--color-primary); border-radius: var(--radius-md);
+      padding: 36px 40px; font-family: var(--font-mono); font-size: 0.8125rem;
+      color: rgba(255,255,255,0.9); line-height: 1.8; max-width: 720px;
+    }
+    .quickstart-panel .comment { color: rgba(255,255,255,0.35); }
+    .quickstart-panel .cmd { color: var(--color-accent-light); }
+
+    /* CTA */
+    .cta-section { background: radial-gradient(ellipse at center, #FFFFFF 30%, #E8F0F0 100%); border-top: 1px solid var(--color-border); text-align: center; padding: 80px; }
+    .cta-section .section-inner { max-width: 640px; }
+    .cta-section .section-heading { margin-bottom: 16px; }
+    .cta-section .section-subtext { margin: 0 auto 32px; text-align: center; }
+    .cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .cta-install { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-accent-dark); background: rgba(126,166,168,0.12); padding: 10px 20px; border-radius: var(--radius-sm); display: inline-block; margin-bottom: 24px; }
+
+    /* Footer */
+    footer { background: var(--color-accent-dark); padding: 40px 80px; color: rgba(255,255,255,0.8); }
+    .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+    .footer-logo .nbs { font-size: 1.25rem; font-weight: 800; color: #fff; }
+    .footer-logo .labs { font-size: 1.25rem; font-weight: 200; color: rgba(255,255,255,0.8); }
+    .footer-tagline { font-size: 0.8125rem; color: rgba(255,255,255,0.5); margin-top: 4px; font-style: italic; }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { font-size: 0.875rem; color: rgba(255,255,255,0.65); transition: color 0.2s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-copy { font-size: 0.8125rem; color: rgba(255,255,255,0.4); }
+
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      section { padding: 72px 40px; }
+      .project-hero { padding: 100px 40px 72px; }
+      .nav-inner { padding: 0 40px; }
+      footer { padding: 32px 40px; }
+      .project-hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .problem-grid { grid-template-columns: 1fr; gap: 32px; }
+      .tools-grid { grid-template-columns: repeat(2, 1fr); }
+      .structure-grid { grid-template-columns: 1fr; gap: 32px; }
+      .cmd-categories { grid-template-columns: repeat(2, 1fr); }
+      .resources-grid { grid-template-columns: 1fr; }
+      .sdd-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+    @media (max-width: 768px) {
+      section { padding: 56px 20px; }
+      .project-hero { padding: 88px 20px 56px; }
+      .nav-inner { padding: 0 20px; }
+      footer { padding: 28px 20px; }
+      .nav-links { display: none; }
+      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: rgba(242,242,242,0.97); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border); padding: 16px 20px; gap: 4px; }
+      .nav-links.open a { padding: 10px 0; font-size: 1rem; border-bottom: 1px solid var(--color-border); }
+      .nav-links.open a:last-child { border-bottom: none; }
+      .nav-hamburger { display: flex; }
+      .tools-grid { grid-template-columns: 1fr 1fr; }
+      .cmd-categories { grid-template-columns: 1fr; }
+      .quickstart-panel { padding: 24px 20px; }
+      .cta-section { padding: 56px 20px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="logo"><span class="nbs">nbs</span><span class="labs">labs</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#research">Research</a></li>
+        <li><a href="/#oss">Open Source</a></li>
+        <li><a href="/#values">Values</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/#contact" class="nav-cta">Get in Touch</a></li>
+      </ul>
+      <div class="nav-hamburger" id="hamburger" aria-label="Toggle menu" role="button" tabindex="0">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="project-hero">
+    <div class="project-hero-inner">
+      <div>
+        <span class="project-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Flagship Project
+        </span>
+        <h1>dotai - <em>One .ai/ Folder</em>, All AI Tools in Sync</h1>
+        <p class="project-hero-desc">
+          AI coding tools each expect their own config directory. dotai creates a single
+          <code>.ai/</code> directory as your source of truth and symlinks everything to where
+          each tool expects it. Edit one file, every tool stays in sync.
+        </p>
+        <div class="hero-actions">
+          <a href="https://www.npmjs.com/package/@nbslabs/dotai" target="_blank" rel="noopener" class="btn-accent">npm Registry</a>
+          <a href="https://github.com/nbslabs/dotai-cli" target="_blank" rel="noopener" class="btn-outline">View on GitHub</a>
+        </div>
+        <div class="hero-meta">
+          <span class="hero-meta-pill">@nbslabs/dotai</span>
+          <span class="hero-meta-pill">v3.1.0</span>
+          <span class="hero-meta-pill">MIT License</span>
+          <span class="hero-meta-pill">Node.js &ge; 18</span>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="assets/dotai-hero.jpg" alt="dotai - Terminal showing .ai/ directory structure with symlinks to .claude/, .gemini/, .github/, and .agents/ directories" loading="eager">
+      </div>
+    </div>
+  </section>
+
+  <!-- The Problem / The Solution -->
+  <section id="problem">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">The Problem dotai Solves</p>
+        <h2 class="section-heading">Config Sprawl Across AI Tools</h2>
+        <p class="section-subtext">Every AI coding assistant expects its configuration in a different file at a different path. You end up maintaining the same instructions in four places.</p>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-panel reveal">
+          <span class="panel-label">Without dotai</span>
+          <span class="file-line">CLAUDE.md</span> <span class="comment">&larr; Claude Code reads this</span><br>
+          <span class="file-line">GEMINI.md</span> <span class="comment">&larr; Gemini CLI reads this</span><br>
+          <span class="file-line">AGENTS.md</span> <span class="comment">&larr; Antigravity reads this</span><br>
+          <span class="file-line">.github/copilot-instructions.md</span><br>
+          <span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&larr; Copilot reads this</span><br><br>
+          <span class="file-line">.claude/rules/</span> <span class="comment">&larr; Claude rules here</span><br>
+          <span class="file-line">.gemini/rules/</span> <span class="comment">&larr; Gemini rules here</span><br>
+          <span class="file-line">.agents/rules/</span> <span class="comment">&larr; Antigravity rules here</span><br><br>
+          <span class="comment">// 4 copies of the same instructions.</span><br>
+          <span class="comment">// Drift is inevitable.</span>
+        </div>
+        <div class="solution-panel reveal">
+          <span class="panel-label">With dotai</span>
+          <span class="link-arrow">.ai/AI.md</span> <span class="comment">&rarr; symlinked to all four</span><br><br>
+          <span class="link-arrow">.ai/rules/</span> <span class="comment">&rarr; .claude/rules/</span><br>
+          <span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&rarr; .gemini/rules/</span><br>
+          <span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&rarr; .agents/rules/</span><br><br>
+          <span class="link-arrow">.ai/skills/</span> <span class="comment">&rarr; all tool skill dirs</span><br>
+          <span class="link-arrow">.ai/knowledge/</span> <span class="comment">&rarr; all tool knowledge dirs</span><br>
+          <span class="link-arrow">.ai/commands/</span> <span class="comment">&rarr; all tool command dirs</span><br><br>
+          <span class="comment">// One source of truth.</span><br>
+          <span class="comment">// Zero drift. Zero maintenance.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Supported Tools -->
+  <section id="tools">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Supported Tools</p>
+        <h2 class="section-heading">Four AI Coding Assistants, Unified</h2>
+        <p class="section-subtext">dotai supports the major AI coding tools out of the box. Each tool gets its config symlinked from the central <code>.ai/</code> directory.</p>
+      </div>
+      <div class="tools-grid">
+        <div class="tool-card reveal">
+          <span class="tool-id">claude</span>
+          <h3>Claude Code</h3>
+          <div class="tool-dir">.claude/</div>
+          <p>AI.md, settings, commands, skills, knowledge</p>
+        </div>
+        <div class="tool-card reveal">
+          <span class="tool-id">gemini</span>
+          <h3>Gemini CLI</h3>
+          <div class="tool-dir">.gemini/</div>
+          <p>AI.md, settings, commands (.toml), skills, ignore, knowledge</p>
+        </div>
+        <div class="tool-card reveal">
+          <span class="tool-id">antigravity</span>
+          <h3>Antigravity</h3>
+          <div class="tool-dir">.gemini/</div>
+          <p>AI.md, AGENTS.md, settings, rules, workflows, skills, knowledge</p>
+        </div>
+        <div class="tool-card reveal">
+          <span class="tool-id">copilot</span>
+          <h3>GitHub Copilot</h3>
+          <div class="tool-dir">.github/</div>
+          <p>AI.md, prompts, instructions, skills, knowledge</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Directory Structure -->
+  <section id="structure">
+    <div class="section-inner">
+      <div class="structure-grid">
+        <div class="structure-panel reveal">
+          <span class="dir">.ai/</span> <span class="comment">Your source of truth</span><br>
+          ├── <span class="dir">AI.md</span> <span class="arrow">──→</span> <span class="target">CLAUDE.md, GEMINI.md, AGENTS.md</span><br>
+          ├── <span class="dir">DOTAI.md</span> <span class="comment">Quick reference guide</span><br>
+          ├── <span class="dir">rules/</span> <span class="arrow">──→</span> <span class="target">.claude/rules/, .gemini/rules/</span><br>
+          ├── <span class="dir">commands/</span> <span class="arrow">──→</span> <span class="target">.claude/commands/</span><br>
+          ├── <span class="dir">commands-gemini/</span> <span class="arrow">──→</span> <span class="target">.gemini/commands/</span><br>
+          ├── <span class="dir">skills/</span> <span class="arrow">──→</span> <span class="target">.claude/, .gemini/, .agents/</span><br>
+          ├── <span class="dir">workflows/</span> <span class="arrow">──→</span> <span class="target">.agents/workflows/</span><br>
+          ├── <span class="dir">knowledge/</span> <span class="arrow">──→</span> <span class="target">.claude/, .gemini/, .github/</span><br>
+          ├── <span class="dir">settings/</span><br>
+          │&nbsp;&nbsp; ├── <span class="dir">claude.json</span> <span class="arrow">──→</span> <span class="target">.claude/settings.json</span><br>
+          │&nbsp;&nbsp; └── <span class="dir">gemini.json</span> <span class="arrow">──→</span> <span class="target">.gemini/settings.json</span><br>
+          └── <span class="dir">ignore/</span><br>
+          &nbsp;&nbsp;&nbsp; └── <span class="dir">.aiignore</span> <span class="arrow">──→</span> <span class="target">.geminiignore</span>
+        </div>
+        <div class="reveal">
+          <div class="structure-text">
+            <p class="section-label">How It Works</p>
+            <h3>Symlink-Based Multi-Tool Sync</h3>
+            <p>
+              dotai scaffolds a <code>.ai/</code> directory and creates symlinks from each tool's expected
+              config location back to the single source of truth. When you edit a file in <code>.ai/</code>,
+              every linked tool sees the change instantly.
+            </p>
+          </div>
+          <div class="structure-bullets">
+            <div class="structure-bullet"><div class="sb-dot"></div><span>The <code>.ai/</code> directory is committed to git, your tool-specific directories are gitignored</span></div>
+            <div class="structure-bullet"><div class="sb-dot"></div><span>Run <code>dotai sync</code> to re-evaluate and repair all symlinks</span></div>
+            <div class="structure-bullet"><div class="sb-dot"></div><span>Run <code>dotai doctor</code> to diagnose and auto-fix any issues</span></div>
+            <div class="structure-bullet"><div class="sb-dot"></div><span>Run <code>dotai status</code> to see the current state of every link</span></div>
+            <div class="structure-bullet"><div class="sb-dot"></div><span>Add or remove tools at any time with <code>dotai add</code> and <code>dotai remove</code></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLI Commands -->
+  <section id="commands">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">CLI Reference</p>
+        <h2 class="section-heading">Comprehensive Command Suite</h2>
+        <p class="section-subtext">From initialization to resource management, dotai provides a full CLI for managing your AI tool configurations.</p>
+      </div>
+      <div class="cmd-categories">
+        <div class="cmd-category reveal">
+          <h3>Core Commands</h3>
+          <div class="cmd-list">
+            <div class="cmd-item"><span class="cmd-name">dotai init</span><span class="cmd-desc">Scaffold .ai/ directory</span></div>
+            <div class="cmd-item"><span class="cmd-name">dotai link</span><span class="cmd-desc">Create symlinks</span></div>
+            <div class="cmd-item"><span class="cmd-name">dotai unlink</span><span class="cmd-desc">Remove symlinks</span></div>
+            <div class="cmd-item"><span class="cmd-name">dotai status</span><span class="cmd-desc">Show link state</span></div>
+            <div class="cmd-item"><span class="cmd-name">dotai sync</span><span class="cmd-desc">Repair all symlinks</span></div>
+            <div class="cmd-item"><span class="cmd-name">dotai doctor</span><span class="cmd-desc">Diagnose + auto-fix</span></div>
+            <div class="cmd-item"><span class="cmd-name">dotai upgrade</span><span class="cmd-desc">Update scaffold files</span></div>
+          </div>
+        </div>
+        <div class="cmd-category reveal">
+          <h3>Resource Management</h3>
+          <div class="cmd-list">
+            <div class="cmd-item"><span class="cmd-name">dotai mcp</span><span class="cmd-desc">MCP server management</span></div>
+            <div class="cmd-item"><span class="cmd-name">dotai skill</span><span class="cmd-desc">Skill package management</span></div>
+            <div class="cmd-item"><span class="cmd-name">dotai rule</span><span class="cmd-desc">Coding rule management</span></div>
+            <div class="cmd-item"><span class="cmd-name">dotai cmd</span><span class="cmd-desc">Slash command management</span></div>
+            <div class="cmd-item"><span class="cmd-name">dotai config</span><span class="cmd-desc">Config get/set/show</span></div>
+          </div>
+        </div>
+        <div class="cmd-category reveal">
+          <h3>SDD Workflow</h3>
+          <div class="cmd-list">
+            <div class="cmd-item"><span class="cmd-name">dotai sdd init</span><span class="cmd-desc">Scaffold SDD toolkit</span></div>
+            <div class="cmd-item"><span class="cmd-name">dotai sdd new</span><span class="cmd-desc">New feature directory</span></div>
+            <div class="cmd-item"><span class="cmd-name">dotai sdd remove</span><span class="cmd-desc">Remove feature artifacts</span></div>
+            <div class="cmd-item"><span class="cmd-name">dotai sdd list</span><span class="cmd-desc">List features + phases</span></div>
+            <div class="cmd-item"><span class="cmd-name">dotai sdd status</span><span class="cmd-desc">Phase progress detail</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resource Management v3.1 -->
+  <section id="resources">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">v3.1.0</p>
+        <h2 class="section-heading">Manage Every Aspect from the CLI</h2>
+        <p class="section-subtext">Add MCP servers, create skills, define rules, and register slash commands, all auto-synced across every enabled tool.</p>
+      </div>
+      <div class="resources-grid">
+        <div class="resource-card reveal">
+          <h3>MCP Servers</h3>
+          <p>Add, remove, and list MCP server configurations across all enabled tool settings with a single command.</p>
+          <span class="resource-cmd">dotai mcp add my-server -c npx -a "my-pkg,serve,--stdio"</span>
+        </div>
+        <div class="resource-card reveal">
+          <h3>Skills</h3>
+          <p>Create skill packages with SKILL.md templates. Each skill is automatically linked to every tool's skill directory.</p>
+          <span class="resource-cmd">dotai skill add code-review -d "Code review guidelines"</span>
+        </div>
+        <div class="resource-card reveal">
+          <h3>Rules</h3>
+          <p>Create coding rule files with frontmatter. Set alwaysApply to ensure rules are active in every session.</p>
+          <span class="resource-cmd">dotai rule add api-conventions --always</span>
+        </div>
+        <div class="resource-card reveal">
+          <h3>Slash Commands</h3>
+          <p>Create slash commands across all enabled tool formats (markdown for Claude, TOML for Gemini) in one step.</p>
+          <span class="resource-cmd">dotai cmd add deploy</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SDD + Knowledge -->
+  <section id="sdd">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Advanced Features</p>
+        <h2 class="section-heading">Spec-Driven Development and Knowledge Base</h2>
+      </div>
+      <div class="sdd-grid">
+        <div class="sdd-card reveal">
+          <span class="sdd-badge">SDD</span>
+          <h3>Spec-Driven Development</h3>
+          <p>An 8-phase workflow for spec-traced code generation. From idea to implementation with structured phases, acceptance criteria, and evaluation.</p>
+          <div class="sdd-phases">
+            <span class="sdd-phase">1. Idea</span>
+            <span class="sdd-phase">2. Specify</span>
+            <span class="sdd-phase">3. Decompose</span>
+            <span class="sdd-phase">4. Plan</span>
+            <span class="sdd-phase">5. Implement</span>
+            <span class="sdd-phase">6. Evaluate</span>
+            <span class="sdd-phase">7. Review</span>
+            <span class="sdd-phase">8. Sync</span>
+          </div>
+          <div class="sdd-code" style="margin-top:20px;">
+            <span class="cmd">dotai sdd init</span><br>
+            <span class="cmd">dotai sdd new user-auth</span><br>
+            <span class="comment"># Then use /sdd-specify, /sdd-decompose, etc.</span>
+          </div>
+        </div>
+        <div class="sdd-card reveal">
+          <span class="sdd-badge">Knowledge</span>
+          <h3>AI-Driven Knowledge Base</h3>
+          <p>A persistent codebase memory layer at <code>.ai/knowledge/</code>. Your AI agents analyze your codebase and persist findings - architecture, patterns, and gotchas.</p>
+          <div class="sdd-code" style="margin-top:16px; margin-bottom:16px;">
+            <span class="comment"># Scaffold knowledge directory + install /learn</span><br>
+            <span class="cmd">dotai knowledge init</span><br><br>
+            <span class="comment"># Then ask your AI agent:</span><br>
+            <span class="cmd">/learn</span><br><br>
+            <span class="comment"># The agent analyzes your codebase and writes</span><br>
+            <span class="comment"># findings into .ai/knowledge/</span>
+          </div>
+          <p style="font-size:0.85rem;">Creates INDEX.md, patterns.md, gotchas.md, changelog.md, and the knowledge-scan skill with <code>/learn</code> command for each enabled tool.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Start -->
+  <section id="quickstart">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Quick Start</p>
+        <h2 class="section-heading">Up and Running in 30 Seconds</h2>
+      </div>
+      <div class="quickstart-panel reveal">
+        <span class="comment"># Install globally</span><br>
+        <span class="cmd">npm install -g @nbslabs/dotai</span><br><br>
+        <span class="comment"># Initialize in your project</span><br>
+        <span class="cmd">cd your-project</span><br>
+        <span class="cmd">dotai init</span><br><br>
+        <span class="comment"># That's it - your .ai/ folder is ready</span><br>
+        <span class="comment"># and all symlinks are created</span><br><br>
+        <span class="comment"># Check the status</span><br>
+        <span class="cmd">dotai status</span><br><br>
+        <span class="comment"># Add resources</span><br>
+        <span class="cmd">dotai mcp add my-server -c npx -a "my-pkg,serve"</span><br>
+        <span class="cmd">dotai skill add code-review</span><br>
+        <span class="cmd">dotai rule add api-style --always</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="section-inner">
+      <h2 class="section-heading">Stop Managing Config in Four Places</h2>
+      <div class="cta-install">npm install -g @nbslabs/dotai</div>
+      <p class="section-subtext">One install. One init. All your AI tools stay in sync, forever.</p>
+      <div class="cta-actions">
+        <a href="https://www.npmjs.com/package/@nbslabs/dotai" target="_blank" rel="noopener" class="btn-accent">View on npm</a>
+        <a href="https://github.com/nbslabs/dotai-cli" target="_blank" rel="noopener" class="btn-outline">Star on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo"><span class="nbs">nbs</span><span class="labs">labs</span></div>
+        <div class="footer-tagline">"Research it. Build it. Open-source it."</div>
+      </div>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="https://github.com/nbslabs" target="_blank" rel="noopener">GitHub</a>
+        <a href="/#oss">Open Source</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div class="footer-copy">2025 nbslabs - Dhaka, Bangladesh</div>
+    </div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    hamburger.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') navLinks.classList.toggle('open'); });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

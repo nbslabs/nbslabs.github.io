@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ielts30 - 30-Day IELTS Study Planner | nbslabs</title>
+  <meta name="description" content="A structured, interactive 30-day IELTS study planner with progress tracking, built-in practice timers, score logging, and mistake analysis. 100% privacy-first.">
+  <meta name="keywords" content="ielts30, IELTS study planner, IELTS preparation, 30-day plan, study tracker, nbslabs, open source, privacy-first">
+  <meta property="og:title" content="ielts30 - 30-Day IELTS Study Planner | nbslabs">
+  <meta property="og:description" content="A structured, interactive 30-day IELTS study planner with progress tracking, practice timers, score logging, and mistake analysis. All data stays in your browser.">
+  <meta property="og:url" content="https://nbslabs.dev/projects/ielts30">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --color-primary:        #1A1A1A;
+      --color-background:     #F2F2F2;
+      --color-surface:        #FFFFFF;
+      --color-accent:         #7EA6A8;
+      --color-accent-dark:    #4A7A7D;
+      --color-accent-light:   #A8C4C6;
+      --color-secondary:      #8FA8B2;
+      --color-text-primary:   #1A1A1A;
+      --color-text-secondary: #3D3D3D;
+      --color-text-muted:     #9E9E9E;
+      --color-border:         #E8E8E8;
+      --color-border-dark:    #CCCCCC;
+      --font-sans:            'Nunito', sans-serif;
+      --font-mono:            'JetBrains Mono', monospace;
+      --shadow-sm:  0 1px 4px rgba(0,0,0,0.06);
+      --shadow-md:  0 2px 12px rgba(0,0,0,0.08);
+      --shadow-lg:  0 8px 32px rgba(0,0,0,0.10);
+      --radius-sm:  6px;
+      --radius-md:  10px;
+      --radius-lg:  12px;
+      --radius-full: 999px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--font-sans); background: var(--color-background);
+      color: var(--color-text-primary); line-height: 1.5; overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    ul { list-style: none; }
+
+    /* Navigation */
+    nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(242,242,242,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border); transition: box-shadow 0.3s; }
+    nav.scrolled { box-shadow: var(--shadow-md); }
+    .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 80px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-family: var(--font-sans); font-size: 1.5rem; letter-spacing: -0.01em; line-height: 1; }
+    .logo .nbs { font-weight: 800; color: var(--color-primary); }
+    .logo .labs { font-weight: 200; color: var(--color-primary); }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--color-text-secondary); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--color-accent-dark); }
+    .nav-cta { background: var(--color-primary); color: #fff !important; padding: 8px 20px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.875rem; transition: background 0.2s !important; }
+    .nav-cta:hover { background: var(--color-text-secondary) !important; }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--color-primary); border-radius: 2px; transition: all 0.3s; }
+
+    /* Hero */
+    .project-hero { position: relative; padding: 120px 80px 80px; background: radial-gradient(ellipse at center, #FFFFFF 40%, #EBEBEB 100%); overflow: hidden; }
+    .project-hero-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+    .project-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-dark); background: rgba(126,166,168,0.12); padding: 5px 14px; border-radius: var(--radius-full); margin-bottom: 20px; }
+    .project-hero h1 { font-size: clamp(2.25rem, 4vw, 3.25rem); font-weight: 700; line-height: 1.15; color: var(--color-primary); margin-bottom: 20px; }
+    .project-hero h1 em { font-style: normal; color: var(--color-accent-dark); }
+    .project-hero-desc { font-size: 1.0625rem; color: var(--color-text-secondary); line-height: 1.7; max-width: 520px; margin-bottom: 32px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-primary { background: var(--color-primary); color: #fff; padding: 11px 26px; border-radius: var(--radius-sm); font-family: var(--font-sans); font-weight: 600; font-size: 0.9rem; border: none; cursor: pointer; transition: background 0.2s; display: inline-block; }
+    .btn-primary:hover { background: var(--color-text-secondary); }
+    .btn-outline { background: transparent; color: var(--color-primary); padding: 10px 26px; border-radius: var(--radius-sm); font-family: var(--font-sans); font-weight: 600; font-size: 0.9rem; border: 1.5px solid var(--color-primary); cursor: pointer; transition: background 0.2s; display: inline-block; }
+    .btn-outline:hover { background: var(--color-border); }
+    .hero-image { border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid var(--color-border); }
+    .hero-image img { width: 100%; height: auto; display: block; }
+
+    /* Section shell */
+    section { padding: 96px 80px; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .section-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-dark); margin-bottom: 12px; }
+    .section-heading { font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 700; color: var(--color-primary); margin-bottom: 16px; line-height: 1.25; }
+    .section-subtext { font-size: 1rem; color: var(--color-text-secondary); max-width: 680px; line-height: 1.7; }
+    .section-header { margin-bottom: 56px; }
+
+    /* Overview */
+    #overview { background: var(--color-surface); }
+    .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .overview-text { font-size: 1rem; color: var(--color-text-secondary); line-height: 1.8; }
+    .overview-text p { margin-bottom: 16px; }
+    .week-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .week-card {
+      background: var(--color-background); border: 1px solid var(--color-border);
+      border-radius: var(--radius-md); padding: 20px; transition: box-shadow 0.25s, transform 0.25s;
+    }
+    .week-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .week-num { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; color: var(--color-accent); letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+    .week-card h4 { font-size: 0.9375rem; font-weight: 700; color: var(--color-primary); margin-bottom: 6px; }
+    .week-card p { font-size: 0.8125rem; color: var(--color-text-muted); line-height: 1.5; }
+
+    /* Features */
+    #features { background: var(--color-background); }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .feature-card {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-md); padding: 28px 24px;
+      transition: box-shadow 0.25s, transform 0.25s; position: relative; overflow: hidden;
+    }
+    .feature-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--color-accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+    .feature-card:hover::after { transform: scaleX(1); }
+    .feature-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .feature-icon { width: 44px; height: 44px; border-radius: var(--radius-sm); background: rgba(126,166,168,0.12); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .feature-icon svg { width: 22px; height: 22px; stroke: var(--color-accent-dark); stroke-width: 1.5; fill: none; }
+    .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--color-primary); }
+    .feature-card p { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.6; }
+
+    /* Timer presets highlight */
+    #timer { background: var(--color-primary); }
+    #timer .section-label { color: var(--color-accent-light); }
+    #timer .section-heading { color: #fff; }
+    #timer .section-subtext { color: rgba(255,255,255,0.7); }
+    .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 40px; }
+    .timer-card {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-md); padding: 24px 20px; text-align: center;
+      transition: background 0.25s;
+    }
+    .timer-card:hover { background: rgba(255,255,255,0.1); }
+    .timer-value { font-family: var(--font-mono); font-size: 1.75rem; font-weight: 700; color: var(--color-accent-light); margin-bottom: 8px; }
+    .timer-card h4 { font-size: 0.9375rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .timer-card p { font-size: 0.8125rem; color: rgba(255,255,255,0.5); }
+
+    /* Tech */
+    #tech { background: var(--color-surface); }
+    .tech-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .tech-pill {
+      background: rgba(126,166,168,0.12); color: var(--color-accent-dark);
+      font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 500;
+      padding: 8px 16px; border-radius: var(--radius-full);
+    }
+
+    /* CTA */
+    .cta-section { background: radial-gradient(ellipse at center, #FFFFFF 30%, #E8F0F0 100%); border-top: 1px solid var(--color-border); text-align: center; padding: 80px; }
+    .cta-section .section-inner { max-width: 600px; }
+    .cta-section .section-heading { margin-bottom: 16px; }
+    .cta-section .section-subtext { margin: 0 auto 32px; text-align: center; }
+    .cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* Footer */
+    footer { background: var(--color-accent-dark); padding: 40px 80px; color: rgba(255,255,255,0.8); }
+    .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+    .footer-logo .nbs { font-size: 1.25rem; font-weight: 800; color: #fff; }
+    .footer-logo .labs { font-size: 1.25rem; font-weight: 200; color: rgba(255,255,255,0.8); }
+    .footer-tagline { font-size: 0.8125rem; color: rgba(255,255,255,0.5); margin-top: 4px; font-style: italic; }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { font-size: 0.875rem; color: rgba(255,255,255,0.65); transition: color 0.2s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-copy { font-size: 0.8125rem; color: rgba(255,255,255,0.4); }
+
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      section { padding: 72px 40px; }
+      .project-hero { padding: 100px 40px 72px; }
+      .nav-inner { padding: 0 40px; }
+      footer { padding: 32px 40px; }
+      .project-hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .overview-grid { grid-template-columns: 1fr; gap: 40px; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .timer-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      section { padding: 56px 20px; }
+      .project-hero { padding: 88px 20px 56px; }
+      .nav-inner { padding: 0 20px; }
+      footer { padding: 28px 20px; }
+      .nav-links { display: none; }
+      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: rgba(242,242,242,0.97); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border); padding: 16px 20px; gap: 4px; }
+      .nav-links.open a { padding: 10px 0; font-size: 1rem; border-bottom: 1px solid var(--color-border); }
+      .nav-links.open a:last-child { border-bottom: none; }
+      .nav-hamburger { display: flex; }
+      .features-grid { grid-template-columns: 1fr; }
+      .timer-grid { grid-template-columns: 1fr 1fr; }
+      .week-cards { grid-template-columns: 1fr; }
+      .cta-section { padding: 56px 20px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="logo"><span class="nbs">nbs</span><span class="labs">labs</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#research">Research</a></li>
+        <li><a href="/#oss">Open Source</a></li>
+        <li><a href="/#values">Values</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/#contact" class="nav-cta">Get in Touch</a></li>
+      </ul>
+      <div class="nav-hamburger" id="hamburger" aria-label="Toggle menu" role="button" tabindex="0">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="project-hero">
+    <div class="project-hero-inner">
+      <div>
+        <span class="project-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          Education
+        </span>
+        <h1>ielts30 - <em>30-Day IELTS</em> Study Planner</h1>
+        <p class="project-hero-desc">
+          A structured, interactive 30-day IELTS study planner designed to help candidates achieve a strong band score
+          with a focused 4-5 hours daily routine. Track tasks, log scores, analyze mistakes, and time your practice sessions,
+          all within a single, privacy-first web page.
+        </p>
+        <div class="hero-actions">
+          <a href="https://ielts30.nbslabs.dev" target="_blank" rel="noopener" class="btn-primary">Start Planning</a>
+          <a href="https://github.com/nbslabs/ielts30" target="_blank" rel="noopener" class="btn-outline">View on GitHub</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="assets/ielts30-hero.jpg" alt="ielts30 - IELTS study planner dashboard showing calendar, progress tracking, practice timer, and daily task checklists" loading="eager">
+      </div>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <section id="overview">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Overview</p>
+        <h2 class="section-heading">A Complete 4-Week IELTS Curriculum</h2>
+      </div>
+      <div class="overview-grid">
+        <div class="overview-text">
+          <p>
+            Preparing for the IELTS exam can feel overwhelming without a clear roadmap. This planner breaks the
+            entire preparation into a structured 4-week, 28-day curriculum built around the official Cambridge
+            IELTS books (Cambridge 16-19).
+          </p>
+          <p>
+            Each day includes specific tasks across all four modules - Listening, Reading, Writing, and Speaking -
+            progressing from pattern recognition in Week 1 to full mock tests by Week 4.
+          </p>
+          <p>
+            The planner is built as a single static HTML page with zero backend dependencies. All progress is saved
+            locally in your browser via localStorage, and you can export/import your data as JSON files to sync
+            across devices or create backups.
+          </p>
+        </div>
+        <div class="week-cards">
+          <div class="week-card reveal">
+            <span class="week-num">WEEK 1</span>
+            <h4>Pattern Recognition</h4>
+            <p>Learn question types and develop core strategies across all four IELTS modules.</p>
+          </div>
+          <div class="week-card reveal">
+            <span class="week-num">WEEK 2</span>
+            <h4>Skill Building</h4>
+            <p>Practice timed exercises and build confidence with increasing difficulty levels.</p>
+          </div>
+          <div class="week-card reveal">
+            <span class="week-num">WEEK 3</span>
+            <h4>Intensive Practice</h4>
+            <p>Full-section practice tests with strict timing and detailed score logging.</p>
+          </div>
+          <div class="week-card reveal">
+            <span class="week-num">WEEK 4</span>
+            <h4>Mock Tests</h4>
+            <p>Complete mock exams under real conditions with comprehensive review.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Features</p>
+        <h2 class="section-heading">Everything You Need in One Page</h2>
+        <p class="section-subtext">From progress tracking to mistake analysis, ielts30 packs a complete study companion into a single, offline-capable web page.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <h3>Interactive Task Checklist</h3>
+          <p>112 checkable tasks across all IELTS modules with visual progress tracking per day, per week, and overall.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <h3>Progress Dashboard</h3>
+          <p>Real-time overall completion percentage, per-week mini progress indicators, and a completed days counter.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <h3>Built-in Practice Timer</h3>
+          <p>Countdown timer with presets for Reading (60 min), Listening (30 min), Speaking Cue Card (2 min), and Full Mock Test (2h 45m).</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <h3>Score and Notes Logging</h3>
+          <p>Record your band scores and key takeaways for each day directly on the day card for easy review.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <h3>Mistake Analysis Journal</h3>
+          <p>Dedicated section to log recurring mistakes across Reading/Listening and Writing/Speaking modules.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </div>
+          <h3>Export and Import (JSON Sync)</h3>
+          <p>Download your progress as a .json backup and import it on any browser to sync across devices.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </div>
+          <h3>Curated Resource Links</h3>
+          <p>Hand-picked IELTS resources including IELTS Liz, British Council, IDP, Cambridge materials, and BBC 6 Minute English.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          </div>
+          <h3>Dark/Light Theme</h3>
+          <p>Full dark mode support with smooth theme transitions and persistent preference saved in localStorage.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h3>100% Privacy</h3>
+          <p>No server, no analytics, no cookies. All data stays in your browser's local storage. Your study data is yours alone.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timer Presets -->
+  <section id="timer">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Practice Timer</p>
+        <h2 class="section-heading">Built-in Timer Presets for Every Module</h2>
+        <p class="section-subtext">Practice under real exam conditions with audio notification on completion.</p>
+      </div>
+      <div class="timer-grid">
+        <div class="timer-card reveal">
+          <div class="timer-value">60:00</div>
+          <h4>Reading</h4>
+          <p>Full section timing</p>
+        </div>
+        <div class="timer-card reveal">
+          <div class="timer-value">30:00</div>
+          <h4>Listening</h4>
+          <p>Standard duration</p>
+        </div>
+        <div class="timer-card reveal">
+          <div class="timer-value">02:00</div>
+          <h4>Speaking Cue Card</h4>
+          <p>Part 2 preparation</p>
+        </div>
+        <div class="timer-card reveal">
+          <div class="timer-value">2:45:00</div>
+          <h4>Full Mock Test</h4>
+          <p>Complete exam simulation</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section id="tech">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Tech Stack</p>
+        <h2 class="section-heading">Simple, Robust, Zero Dependencies</h2>
+        <p class="section-subtext">Built as a single static HTML page with no backend. Runs anywhere a browser runs.</p>
+      </div>
+      <div class="tech-row">
+        <span class="tech-pill">HTML5</span>
+        <span class="tech-pill">Tailwind CSS (CDN)</span>
+        <span class="tech-pill">Vanilla JavaScript (ES6+)</span>
+        <span class="tech-pill">Lucide Icons</span>
+        <span class="tech-pill">Inter (Google Fonts)</span>
+        <span class="tech-pill">Browser localStorage</span>
+        <span class="tech-pill">GitHub Pages</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="section-inner">
+      <h2 class="section-heading">Start Your 30-Day IELTS Journey</h2>
+      <p class="section-subtext">No account needed. No installation. Open in your browser and start preparing for IELTS today.</p>
+      <div class="cta-actions">
+        <a href="https://ielts30.nbslabs.dev" target="_blank" rel="noopener" class="btn-primary">Open ielts30</a>
+        <a href="https://github.com/nbslabs/ielts30" target="_blank" rel="noopener" class="btn-outline">Star on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo"><span class="nbs">nbs</span><span class="labs">labs</span></div>
+        <div class="footer-tagline">"Research it. Build it. Open-source it."</div>
+      </div>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="https://github.com/nbslabs" target="_blank" rel="noopener">GitHub</a>
+        <a href="/#oss">Open Source</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div class="footer-copy">2025 nbslabs - Dhaka, Bangladesh</div>
+    </div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    hamburger.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') navLinks.classList.toggle('open'); });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

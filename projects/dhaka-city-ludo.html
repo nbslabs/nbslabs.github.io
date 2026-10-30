@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dhaka City Ludo - 3D Rooftop Ludo Game | nbslabs</title>
+  <meta name="description" content="A culturally immersive, browser-based 3D Ludo board game set on a Dhaka rooftop. Built with Three.js and Tone.js, featuring 4 game modes, dynamic weather, and FPS rooftop exploration.">
+  <meta name="keywords" content="dhaka city ludo, ludo game, 3D ludo, dhaka rooftop, three.js, browser game, nbslabs, open source, bangladesh game">
+  <meta property="og:title" content="Dhaka City Ludo - 3D Rooftop Ludo Game | nbslabs">
+  <meta property="og:description" content="A culturally immersive 3D Ludo board game set on a Dhaka rooftop with rickshaw bells, CNG buzzes, street food vendors, and Kalboishakhi storms.">
+  <meta property="og:url" content="https://nbslabs.dev/projects/dhaka-city-ludo">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --color-primary:        #1A1A1A;
+      --color-background:     #F2F2F2;
+      --color-surface:        #FFFFFF;
+      --color-accent:         #7EA6A8;
+      --color-accent-dark:    #4A7A7D;
+      --color-accent-light:   #A8C4C6;
+      --color-secondary:      #8FA8B2;
+      --color-text-primary:   #1A1A1A;
+      --color-text-secondary: #3D3D3D;
+      --color-text-muted:     #9E9E9E;
+      --color-border:         #E8E8E8;
+      --color-border-dark:    #CCCCCC;
+      --font-sans:            'Nunito', sans-serif;
+      --font-mono:            'JetBrains Mono', monospace;
+      --shadow-sm:  0 1px 4px rgba(0,0,0,0.06);
+      --shadow-md:  0 2px 12px rgba(0,0,0,0.08);
+      --shadow-lg:  0 8px 32px rgba(0,0,0,0.10);
+      --radius-sm:  6px;
+      --radius-md:  10px;
+      --radius-lg:  12px;
+      --radius-full: 999px;
+      /* Ludo-specific accent colors */
+      --ludo-red:    #E05A5A;
+      --ludo-green:  #5AAE5A;
+      --ludo-yellow: #E0C55A;
+      --ludo-blue:   #5A8AE0;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--font-sans); background: var(--color-background);
+      color: var(--color-text-primary); line-height: 1.5; overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    ul { list-style: none; }
+
+    /* Navigation */
+    nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(242,242,242,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border); transition: box-shadow 0.3s; }
+    nav.scrolled { box-shadow: var(--shadow-md); }
+    .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 80px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-family: var(--font-sans); font-size: 1.5rem; letter-spacing: -0.01em; line-height: 1; }
+    .logo .nbs { font-weight: 800; color: var(--color-primary); }
+    .logo .labs { font-weight: 200; color: var(--color-primary); }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--color-text-secondary); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--color-accent-dark); }
+    .nav-cta { background: var(--color-primary); color: #fff !important; padding: 8px 20px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.875rem; transition: background 0.2s !important; }
+    .nav-cta:hover { background: var(--color-text-secondary) !important; }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--color-primary); border-radius: 2px; transition: all 0.3s; }
+
+    /* Hero */
+    .project-hero { position: relative; padding: 120px 80px 80px; background: radial-gradient(ellipse at center, #FFFFFF 40%, #EBEBEB 100%); overflow: hidden; }
+    .project-hero-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+    .project-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-dark); background: rgba(126,166,168,0.12); padding: 5px 14px; border-radius: var(--radius-full); margin-bottom: 20px; }
+    .project-hero h1 { font-size: clamp(2.25rem, 4vw, 3.25rem); font-weight: 700; line-height: 1.15; color: var(--color-primary); margin-bottom: 20px; }
+    .project-hero h1 em { font-style: normal; color: var(--color-accent-dark); }
+    .project-hero-desc { font-size: 1.0625rem; color: var(--color-text-secondary); line-height: 1.7; max-width: 520px; margin-bottom: 32px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-primary { background: var(--color-primary); color: #fff; padding: 11px 26px; border-radius: var(--radius-sm); font-family: var(--font-sans); font-weight: 600; font-size: 0.9rem; border: none; cursor: pointer; transition: background 0.2s; display: inline-block; }
+    .btn-primary:hover { background: var(--color-text-secondary); }
+    .btn-outline { background: transparent; color: var(--color-primary); padding: 10px 26px; border-radius: var(--radius-sm); font-family: var(--font-sans); font-weight: 600; font-size: 0.9rem; border: 1.5px solid var(--color-primary); cursor: pointer; transition: background 0.2s; display: inline-block; }
+    .btn-outline:hover { background: var(--color-border); }
+    .hero-image { border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid var(--color-border); }
+    .hero-image img { width: 100%; height: auto; display: block; }
+
+    /* Section shell */
+    section { padding: 96px 80px; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .section-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-dark); margin-bottom: 12px; }
+    .section-heading { font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 700; color: var(--color-primary); margin-bottom: 16px; line-height: 1.25; }
+    .section-subtext { font-size: 1rem; color: var(--color-text-secondary); max-width: 680px; line-height: 1.7; }
+    .section-header { margin-bottom: 56px; }
+
+    /* Teams section */
+    #teams { background: var(--color-surface); }
+    .teams-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .team-card {
+      border-radius: var(--radius-md); padding: 28px 24px; text-align: center;
+      transition: box-shadow 0.25s, transform 0.25s; position: relative; overflow: hidden;
+    }
+    .team-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .team-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .team-red { background: #FDF2F2; border: 1px solid #F5D0D0; }
+    .team-red::before { background: var(--ludo-red); }
+    .team-green { background: #F2FDF2; border: 1px solid #D0F5D0; }
+    .team-green::before { background: var(--ludo-green); }
+    .team-yellow { background: #FDFDF2; border: 1px solid #F5F5D0; }
+    .team-yellow::before { background: var(--ludo-yellow); }
+    .team-blue { background: #F2F5FD; border: 1px solid #D0DEF5; }
+    .team-blue::before { background: var(--ludo-blue); }
+    .team-emoji { font-size: 2.5rem; margin-bottom: 12px; display: block; }
+    .team-card h3 { font-size: 1rem; font-weight: 700; color: var(--color-primary); margin-bottom: 6px; }
+    .team-card p { font-size: 0.8125rem; color: var(--color-text-muted); }
+
+    /* Features */
+    #features { background: var(--color-background); }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .feature-card {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-md); padding: 28px 24px;
+      transition: box-shadow 0.25s, transform 0.25s; position: relative; overflow: hidden;
+    }
+    .feature-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--color-accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+    .feature-card:hover::after { transform: scaleX(1); }
+    .feature-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .feature-icon { width: 44px; height: 44px; border-radius: var(--radius-sm); background: rgba(126,166,168,0.12); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .feature-icon svg { width: 22px; height: 22px; stroke: var(--color-accent-dark); stroke-width: 1.5; fill: none; }
+    .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--color-primary); }
+    .feature-card p { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.6; }
+
+    /* Game modes */
+    #modes { background: var(--color-surface); }
+    .modes-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .mode-card {
+      background: var(--color-background); border: 1px solid var(--color-border);
+      border-radius: var(--radius-md); padding: 28px 24px; text-align: center;
+      transition: box-shadow 0.25s, transform 0.25s;
+    }
+    .mode-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .mode-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
+    .mode-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; color: var(--color-primary); }
+    .mode-card p { font-size: 0.8125rem; color: var(--color-text-muted); line-height: 1.5; }
+
+    /* Dhaka Twist Events & Weather */
+    #dhaka-vibes { background: var(--color-primary); }
+    #dhaka-vibes .section-label { color: var(--color-accent-light); }
+    #dhaka-vibes .section-heading { color: #fff; }
+    #dhaka-vibes .section-subtext { color: rgba(255,255,255,0.7); }
+    .vibes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 48px; }
+    .vibes-column h3 { font-size: 1.125rem; font-weight: 700; color: var(--color-accent-light); margin-bottom: 20px; }
+    .vibe-item {
+      display: flex; gap: 12px; align-items: center; padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .vibe-item:last-child { border-bottom: none; }
+    .vibe-emoji { font-size: 1.25rem; flex-shrink: 0; width: 28px; text-align: center; }
+    .vibe-text { font-size: 0.875rem; color: rgba(255,255,255,0.75); }
+
+    /* FPS Explorer */
+    #fps { background: var(--color-background); }
+    .fps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .fps-text { font-size: 1rem; color: var(--color-text-secondary); line-height: 1.8; }
+    .fps-text p { margin-bottom: 16px; }
+    .npc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .npc-card {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm); padding: 14px 12px; text-align: center;
+      transition: box-shadow 0.2s;
+    }
+    .npc-card:hover { box-shadow: var(--shadow-sm); }
+    .npc-emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .npc-card span { font-size: 0.75rem; font-weight: 600; color: var(--color-text-secondary); }
+
+    /* Tech */
+    #tech { background: var(--color-surface); }
+    .tech-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 32px; }
+    .tech-card {
+      background: var(--color-background); border: 1px solid var(--color-border);
+      border-radius: var(--radius-md); padding: 20px; text-align: center;
+      transition: box-shadow 0.25s;
+    }
+    .tech-card:hover { box-shadow: var(--shadow-md); }
+    .tech-card h4 { font-size: 0.9375rem; font-weight: 700; color: var(--color-primary); margin-bottom: 4px; }
+    .tech-card p { font-size: 0.8125rem; color: var(--color-text-muted); }
+
+    /* Quick start */
+    #quickstart { background: var(--color-background); }
+    .quickstart-panel {
+      background: var(--color-primary); border-radius: var(--radius-md);
+      padding: 36px 40px; font-family: var(--font-mono); font-size: 0.8125rem;
+      color: rgba(255,255,255,0.9); line-height: 1.8; max-width: 720px;
+    }
+    .quickstart-panel .comment { color: rgba(255,255,255,0.35); }
+    .quickstart-panel .cmd { color: var(--color-accent-light); }
+
+    /* CTA */
+    .cta-section { background: radial-gradient(ellipse at center, #FFFFFF 30%, #E8F0F0 100%); border-top: 1px solid var(--color-border); text-align: center; padding: 80px; }
+    .cta-section .section-inner { max-width: 600px; }
+    .cta-section .section-heading { margin-bottom: 16px; }
+    .cta-section .section-subtext { margin: 0 auto 32px; text-align: center; }
+    .cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* Footer */
+    footer { background: var(--color-accent-dark); padding: 40px 80px; color: rgba(255,255,255,0.8); }
+    .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+    .footer-logo .nbs { font-size: 1.25rem; font-weight: 800; color: #fff; }
+    .footer-logo .labs { font-size: 1.25rem; font-weight: 200; color: rgba(255,255,255,0.8); }
+    .footer-tagline { font-size: 0.8125rem; color: rgba(255,255,255,0.5); margin-top: 4px; font-style: italic; }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { font-size: 0.875rem; color: rgba(255,255,255,0.65); transition: color 0.2s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-copy { font-size: 0.8125rem; color: rgba(255,255,255,0.4); }
+
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      section { padding: 72px 40px; }
+      .project-hero { padding: 100px 40px 72px; }
+      .nav-inner { padding: 0 40px; }
+      footer { padding: 32px 40px; }
+      .project-hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .teams-grid { grid-template-columns: repeat(2, 1fr); }
+      .modes-grid { grid-template-columns: repeat(2, 1fr); }
+      .vibes-grid { grid-template-columns: 1fr; gap: 32px; }
+      .fps-grid { grid-template-columns: 1fr; gap: 32px; }
+      .tech-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      section { padding: 56px 20px; }
+      .project-hero { padding: 88px 20px 56px; }
+      .nav-inner { padding: 0 20px; }
+      footer { padding: 28px 20px; }
+      .nav-links { display: none; }
+      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: rgba(242,242,242,0.97); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border); padding: 16px 20px; gap: 4px; }
+      .nav-links.open a { padding: 10px 0; font-size: 1rem; border-bottom: 1px solid var(--color-border); }
+      .nav-links.open a:last-child { border-bottom: none; }
+      .nav-hamburger { display: flex; }
+      .features-grid { grid-template-columns: 1fr; }
+      .teams-grid { grid-template-columns: 1fr 1fr; }
+      .modes-grid { grid-template-columns: 1fr 1fr; }
+      .npc-grid { grid-template-columns: repeat(2, 1fr); }
+      .tech-grid { grid-template-columns: 1fr; }
+      .quickstart-panel { padding: 24px 20px; }
+      .cta-section { padding: 56px 20px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="logo"><span class="nbs">nbs</span><span class="labs">labs</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#research">Research</a></li>
+        <li><a href="/#oss">Open Source</a></li>
+        <li><a href="/#values">Values</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/#contact" class="nav-cta">Get in Touch</a></li>
+      </ul>
+      <div class="nav-hamburger" id="hamburger" aria-label="Toggle menu" role="button" tabindex="0">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="project-hero">
+    <div class="project-hero-inner">
+      <div>
+        <span class="project-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Game
+        </span>
+        <h1>Dhaka City <em>3D Ludo</em></h1>
+        <p class="project-hero-desc">
+          A culturally immersive, browser-based 3D Ludo board game set on a Dhaka rooftop. Built entirely as a
+          single-page web app with Three.js and Tone.js, it brings the nostalgic experience of playing Ludo during
+          a rooftop "adda" to life, complete with rickshaw bells, CNG buzzes, street food vendors, and Kalboishakhi storms.
+        </p>
+        <div class="hero-actions">
+          <a href="https://dhakaludo.nbslabs.dev" target="_blank" rel="noopener" class="btn-primary">Play Now</a>
+          <a href="https://github.com/nbslabs/dhaka-city-ludo" target="_blank" rel="noopener" class="btn-outline">View on GitHub</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="assets/dhakaludo-hero.jpg" alt="Dhaka City 3D Ludo - A rooftop scene in Dhaka with a colorful Ludo board game being played" loading="eager">
+      </div>
+    </div>
+  </section>
+
+  <!-- Teams -->
+  <section id="teams">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Four Teams</p>
+        <h2 class="section-heading">Dhaka-Themed Teams, Each with a Story</h2>
+        <p class="section-subtext">Each team represents an iconic piece of Dhaka's vibrant street culture, complete with unique sound effects.</p>
+      </div>
+      <div class="teams-grid">
+        <div class="team-card team-red reveal">
+          <span class="team-emoji">🚲</span>
+          <h3>Lalbagh Rickshaw</h3>
+          <p>Red team with rickshaw bell sound effects</p>
+        </div>
+        <div class="team-card team-green reveal">
+          <span class="team-emoji">🛺</span>
+          <h3>Dhanmondi CNG</h3>
+          <p>Green team with CNG putt-putt sounds</p>
+        </div>
+        <div class="team-card team-yellow reveal">
+          <span class="team-emoji">🐅</span>
+          <h3>Sonargaon Tiger</h3>
+          <p>Yellow team with tiger roar effects</p>
+        </div>
+        <div class="team-card team-blue reveal">
+          <span class="team-emoji">🚢</span>
+          <h3>Buriganga Launch</h3>
+          <p>Blue team with boat horn sounds</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Game Modes -->
+  <section id="modes">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Game Modes</p>
+        <h2 class="section-heading">Play Solo, Locally, or Online</h2>
+      </div>
+      <div class="modes-grid">
+        <div class="mode-card reveal">
+          <span class="mode-icon">🤖</span>
+          <h3>1P vs AI</h3>
+          <p>Heuristic-based AI that prioritizes captures, safe squares, and home stretches</p>
+        </div>
+        <div class="mode-card reveal">
+          <span class="mode-icon">👥</span>
+          <h3>2P Local</h3>
+          <p>Two players on the same device, taking turns on the rooftop board</p>
+        </div>
+        <div class="mode-card reveal">
+          <span class="mode-icon">👨‍👩‍👧‍👦</span>
+          <h3>4P Local</h3>
+          <p>Full four-player local multiplayer for rooftop game nights</p>
+        </div>
+        <div class="mode-card reveal">
+          <span class="mode-icon">🌐</span>
+          <h3>Online 2P</h3>
+          <p>Peer-to-peer via WebRTC. Share a 6-character room code to connect</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Features</p>
+        <h2 class="section-heading">More Than Just a Board Game</h2>
+        <p class="section-subtext">From procedural audio to first-person rooftop exploration, Dhaka City Ludo pushes the boundaries of what a browser game can be.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          </div>
+          <h3>3D WebGL Board</h3>
+          <p>Full Three.js-powered Ludo board with shadows, fog, and procedural geometry on an octagonal Dhaka rooftop.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </div>
+          <h3>Procedural Audio Engine</h3>
+          <p>Real-time Tone.js soundscape with metro rail Doppler, diesel bus rumble, CNG putt-putt, rickshaw bells, and ambient BGM.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>
+          </div>
+          <h3>11 Weather Presets</h3>
+          <p>Morning, Noon, Evening, Night, Full Moon, Rainy, Kalboishakhi Storm with lightning and flood waves, and more.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <h3>14+ Dhaka Twist Events</h3>
+          <p>Traffic Jams, Load Shedding, Shantinagar Floods, WASA Digging, Mosquito Fogger, Rooftop Cat, Pigeon Frenzy, and more.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <h3>Online Multiplayer</h3>
+          <p>Peer-to-peer via PeerJS/WebRTC DataChannels. No backend server needed. Share a room code via WhatsApp or Messenger.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <h3>First-Person Rooftop Walk</h3>
+          <p>Full FPS mode with WASD movement, sprint, jump, and collision physics. Walk around and explore the rooftop.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>12 Interactive NPCs</h3>
+          <p>Tong Cha stall, Fuchka cart, Jhalmuri vendor, Paan kiosk, Kacchi Biriyani chef, BBQ grill, Guitar Adda, and more.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          </div>
+          <h3>Toy Store and Projectiles</h3>
+          <p>Buy and shoot traditional toys: Batul slingshot, bamboo bow, Paperfly planes, Latim spinning tops, and Fanush lanterns.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <h3>Bilingual UI and Mobile</h3>
+          <p>Bengali and English throughout the interface. Touch-optimized with adaptive UI for phones and tablets.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dhaka Vibes: Twists & Weather -->
+  <section id="dhaka-vibes">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">The Dhaka Experience</p>
+        <h2 class="section-heading">Twist Events and Dynamic Weather</h2>
+        <p class="section-subtext">Random events and weather changes keep every match unpredictable and culturally authentic.</p>
+      </div>
+      <div class="vibes-grid">
+        <div class="vibes-column reveal">
+          <h3>Dhaka Twist Events</h3>
+          <div class="vibe-item"><span class="vibe-emoji">🚗</span><span class="vibe-text">Traffic Jam - tokens get stuck</span></div>
+          <div class="vibe-item"><span class="vibe-emoji">💡</span><span class="vibe-text">Load Shedding - board goes dark</span></div>
+          <div class="vibe-item"><span class="vibe-emoji">🌊</span><span class="vibe-text">Shantinagar Flood - pieces swept away</span></div>
+          <div class="vibe-item"><span class="vibe-emoji">🔧</span><span class="vibe-text">WASA Digging - path blocked</span></div>
+          <div class="vibe-item"><span class="vibe-emoji">🦟</span><span class="vibe-text">Mosquito Fogger - fog clouds the board</span></div>
+          <div class="vibe-item"><span class="vibe-emoji">🐱</span><span class="vibe-text">Rooftop Cat - knocks pieces around</span></div>
+          <div class="vibe-item"><span class="vibe-emoji">🕊️</span><span class="vibe-text">Pigeon Frenzy - chaos on the board</span></div>
+          <div class="vibe-item"><span class="vibe-emoji">🏏</span><span class="vibe-text">Cricket Sixer - ball hits the board</span></div>
+        </div>
+        <div class="vibes-column reveal">
+          <h3>Weather Presets</h3>
+          <div class="vibe-item"><span class="vibe-emoji">🌅</span><span class="vibe-text">Morning - warm golden light</span></div>
+          <div class="vibe-item"><span class="vibe-emoji">☀️</span><span class="vibe-text">Noon / Sunny - bright daylight</span></div>
+          <div class="vibe-item"><span class="vibe-emoji">🌆</span><span class="vibe-text">Afternoon / Evening - ambient glow</span></div>
+          <div class="vibe-item"><span class="vibe-emoji">🌙</span><span class="vibe-text">Night / Midnight - city lights</span></div>
+          <div class="vibe-item"><span class="vibe-emoji">🌕</span><span class="vibe-text">Full Moon - moonlit rooftop</span></div>
+          <div class="vibe-item"><span class="vibe-emoji">🌧️</span><span class="vibe-text">Rainy - monsoon atmosphere</span></div>
+          <div class="vibe-item"><span class="vibe-emoji">⛈️</span><span class="vibe-text">Kalboishakhi Storm - lightning and flood</span></div>
+          <div class="vibe-item"><span class="vibe-emoji">❄️</span><span class="vibe-text">Snowy - frosty winter variant</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FPS Explorer -->
+  <section id="fps">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Rooftop Explorer</p>
+        <h2 class="section-heading">Walk Around the Rooftop in First Person</h2>
+      </div>
+      <div class="fps-grid">
+        <div class="fps-text reveal">
+          <p>
+            Step away from the board and explore the rooftop in full first-person mode. Walk around with
+            WASD controls, sprint, jump, and interact with the rich environment around you.
+          </p>
+          <p>
+            Discover 12 interactive NPC spots scattered across the rooftop - each with unique dialogue,
+            sound effects, and mini-interactions that bring the Dhaka rooftop atmosphere to life.
+          </p>
+          <p>
+            Visit the Toy Store to buy traditional Bengali toys, then launch them as projectiles - slingshot
+            clay guli, shoot bamboo arrows, fly Paperfly planes, spin Latim tops, throw Patka firecrackers,
+            or release Fanush sky lanterns into the evening sky.
+          </p>
+        </div>
+        <div class="npc-grid reveal">
+          <div class="npc-card"><span class="npc-emoji">☕</span><span>Tong Cha</span></div>
+          <div class="npc-card"><span class="npc-emoji">🫓</span><span>Fuchka Cart</span></div>
+          <div class="npc-card"><span class="npc-emoji">🥜</span><span>Jhalmuri</span></div>
+          <div class="npc-card"><span class="npc-emoji">🍃</span><span>Paan Kiosk</span></div>
+          <div class="npc-card"><span class="npc-emoji">🍛</span><span>Kacchi Biriyani</span></div>
+          <div class="npc-card"><span class="npc-emoji">🍖</span><span>BBQ Grill</span></div>
+          <div class="npc-card"><span class="npc-emoji">🎸</span><span>Guitar Adda</span></div>
+          <div class="npc-card"><span class="npc-emoji">🎭</span><span>Bioscope Box</span></div>
+          <div class="npc-card"><span class="npc-emoji">👮</span><span>Traffic Sergeant</span></div>
+          <div class="npc-card"><span class="npc-emoji">🪁</span><span>Kite Flyers</span></div>
+          <div class="npc-card"><span class="npc-emoji">🧸</span><span>Toy Store</span></div>
+          <div class="npc-card"><span class="npc-emoji">💃</span><span>Disco Party</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section id="tech">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Tech Stack</p>
+        <h2 class="section-heading">Built with Web Standards</h2>
+        <p class="section-subtext">No build tools, no package managers. Open the HTML file in any modern browser and play.</p>
+      </div>
+      <div class="tech-grid">
+        <div class="tech-card reveal"><h4>Three.js r128</h4><p>3D rendering engine</p></div>
+        <div class="tech-card reveal"><h4>Tone.js 14.8</h4><p>Procedural audio engine</p></div>
+        <div class="tech-card reveal"><h4>PeerJS 1.5</h4><p>WebRTC peer-to-peer networking</p></div>
+        <div class="tech-card reveal"><h4>Vanilla JavaScript</h4><p>No frameworks, pure ES6+</p></div>
+        <div class="tech-card reveal"><h4>Tailwind CSS (CDN)</h4><p>Utility-first styling</p></div>
+        <div class="tech-card reveal"><h4>GitHub Pages</h4><p>Static hosting with custom domain</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Start -->
+  <section id="quickstart">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Run Locally</p>
+        <h2 class="section-heading">Clone and Play</h2>
+        <p class="section-subtext">WebGL support required. For best experience, use a Chromium-based browser with hardware acceleration enabled.</p>
+      </div>
+      <div class="quickstart-panel reveal">
+        <span class="comment"># Clone the repository</span><br>
+        <span class="cmd">git clone git@github.com:nbslabs/dhaka-city-ludo.git</span><br>
+        <span class="cmd">cd dhaka-city-ludo</span><br><br>
+        <span class="comment"># Serve with any HTTP server</span><br>
+        <span class="cmd">python3 -m http.server 8000</span><br><br>
+        <span class="comment"># Or use Node.js</span><br>
+        <span class="cmd">npx -y serve .</span><br><br>
+        <span class="comment"># Open http://localhost:8000</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="section-inner">
+      <h2 class="section-heading">Ready for a Rooftop Adda?</h2>
+      <p class="section-subtext">No downloads, no installs. Click play and experience Dhaka's rooftop Ludo culture right in your browser.</p>
+      <div class="cta-actions">
+        <a href="https://dhakaludo.nbslabs.dev" target="_blank" rel="noopener" class="btn-primary">Play Dhaka City Ludo</a>
+        <a href="https://github.com/nbslabs/dhaka-city-ludo" target="_blank" rel="noopener" class="btn-outline">Star on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo"><span class="nbs">nbs</span><span class="labs">labs</span></div>
+        <div class="footer-tagline">"Research it. Build it. Open-source it."</div>
+      </div>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="https://github.com/nbslabs" target="_blank" rel="noopener">GitHub</a>
+        <a href="/#oss">Open Source</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div class="footer-copy">2025 nbslabs - Dhaka, Bangladesh</div>
+    </div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    hamburger.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') navLinks.classList.toggle('open'); });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

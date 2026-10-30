@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DiffLense - Privacy-Focused Git Diff Viewer | nbslabs</title>
+  <meta name="description" content="DiffLense is a clean, secure, privacy-focused git diff viewer that processes everything client-side. Upload a diff file or paste raw diff text to explore changes.">
+  <meta name="keywords" content="difflense, git diff viewer, diff tool, code review, privacy, client-side, nbslabs, open source">
+  <meta property="og:title" content="DiffLense - Privacy-Focused Git Diff Viewer | nbslabs">
+  <meta property="og:description" content="A clean, secure, privacy-focused git diff viewer that processes everything client-side. Side-by-side and unified views, file navigation, syntax highlighting.">
+  <meta property="og:url" content="https://nbslabs.dev/projects/difflense">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --color-primary:        #1A1A1A;
+      --color-background:     #F2F2F2;
+      --color-surface:        #FFFFFF;
+      --color-accent:         #7EA6A8;
+      --color-accent-dark:    #4A7A7D;
+      --color-accent-light:   #A8C4C6;
+      --color-secondary:      #8FA8B2;
+      --color-text-primary:   #1A1A1A;
+      --color-text-secondary: #3D3D3D;
+      --color-text-muted:     #9E9E9E;
+      --color-border:         #E8E8E8;
+      --color-border-dark:    #CCCCCC;
+      --font-sans:            'Nunito', sans-serif;
+      --font-mono:            'JetBrains Mono', monospace;
+      --shadow-sm:  0 1px 4px rgba(0,0,0,0.06);
+      --shadow-md:  0 2px 12px rgba(0,0,0,0.08);
+      --shadow-lg:  0 8px 32px rgba(0,0,0,0.10);
+      --radius-sm:  6px;
+      --radius-md:  10px;
+      --radius-lg:  12px;
+      --radius-full: 999px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-background);
+      color: var(--color-text-primary);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    ul { list-style: none; }
+
+    /* Navigation */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(242,242,242,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: var(--shadow-md); }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 80px;
+      height: 64px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { font-family: var(--font-sans); font-size: 1.5rem; letter-spacing: -0.01em; line-height: 1; }
+    .logo .nbs  { font-weight: 800; color: var(--color-primary); }
+    .logo .labs { font-weight: 200; color: var(--color-primary); }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--color-text-secondary); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--color-accent-dark); }
+    .nav-cta {
+      background: var(--color-primary); color: #fff !important;
+      padding: 8px 20px; border-radius: var(--radius-sm);
+      font-weight: 600; font-size: 0.875rem; transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--color-text-secondary) !important; }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--color-primary); border-radius: 2px; transition: all 0.3s; }
+
+    /* Hero */
+    .project-hero {
+      position: relative;
+      padding: 120px 80px 80px;
+      background: radial-gradient(ellipse at center, #FFFFFF 40%, #EBEBEB 100%);
+      overflow: hidden;
+    }
+    .project-hero-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    }
+    .project-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--color-accent-dark);
+      background: rgba(126,166,168,0.12);
+      padding: 5px 14px; border-radius: var(--radius-full);
+      margin-bottom: 20px;
+    }
+    .project-hero h1 {
+      font-size: clamp(2.25rem, 4vw, 3.25rem);
+      font-weight: 700; line-height: 1.15; color: var(--color-primary); margin-bottom: 20px;
+    }
+    .project-hero h1 em { font-style: normal; color: var(--color-accent-dark); }
+    .project-hero-desc {
+      font-size: 1.0625rem; color: var(--color-text-secondary);
+      line-height: 1.7; max-width: 520px; margin-bottom: 32px;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--color-primary); color: #fff;
+      padding: 11px 26px; border-radius: var(--radius-sm);
+      font-family: var(--font-sans); font-weight: 600; font-size: 0.9rem;
+      border: none; cursor: pointer; transition: background 0.2s; display: inline-block;
+    }
+    .btn-primary:hover { background: var(--color-text-secondary); }
+    .btn-outline {
+      background: transparent; color: var(--color-primary);
+      padding: 10px 26px; border-radius: var(--radius-sm);
+      font-family: var(--font-sans); font-weight: 600; font-size: 0.9rem;
+      border: 1.5px solid var(--color-primary); cursor: pointer; transition: background 0.2s; display: inline-block;
+    }
+    .btn-outline:hover { background: var(--color-border); }
+    .hero-image {
+      border-radius: var(--radius-lg); overflow: hidden;
+      box-shadow: var(--shadow-lg); border: 1px solid var(--color-border);
+    }
+    .hero-image img { width: 100%; height: auto; display: block; }
+
+    /* Section shell */
+    section { padding: 96px 80px; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--color-accent-dark); margin-bottom: 12px;
+    }
+    .section-heading {
+      font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 700;
+      color: var(--color-primary); margin-bottom: 16px; line-height: 1.25;
+    }
+    .section-subtext { font-size: 1rem; color: var(--color-text-secondary); max-width: 680px; line-height: 1.7; }
+    .section-header { margin-bottom: 56px; }
+
+    /* Features grid */
+    #features { background: var(--color-surface); }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .feature-card {
+      background: var(--color-background); border: 1px solid var(--color-border);
+      border-radius: var(--radius-md); padding: 28px 24px;
+      transition: box-shadow 0.25s, transform 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .feature-card::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--color-accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+    }
+    .feature-card:hover::after { transform: scaleX(1); }
+    .feature-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .feature-icon {
+      width: 44px; height: 44px; border-radius: var(--radius-sm);
+      background: rgba(126,166,168,0.12); display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .feature-icon svg { width: 22px; height: 22px; stroke: var(--color-accent-dark); stroke-width: 1.5; fill: none; }
+    .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--color-primary); }
+    .feature-card p { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.6; }
+
+    /* How to use */
+    #how-to-use { background: var(--color-background); }
+    .steps-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+    .step-card {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-md); padding: 24px 20px; text-align: center;
+      transition: box-shadow 0.25s, transform 0.25s;
+    }
+    .step-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .step-number {
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500;
+      color: var(--color-accent); letter-spacing: 0.08em; margin-bottom: 12px; display: block;
+    }
+    .step-card h3 { font-size: 0.9375rem; font-weight: 700; margin-bottom: 8px; color: var(--color-primary); }
+    .step-card p { font-size: 0.8125rem; color: var(--color-text-secondary); line-height: 1.6; }
+
+    /* Sidebar feature */
+    #sidebar-feature { background: var(--color-surface); }
+    .sidebar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .sidebar-bullets { display: flex; flex-direction: column; gap: 14px; }
+    .sidebar-bullet {
+      display: flex; gap: 12px; align-items: flex-start;
+      font-size: 0.9rem; color: var(--color-text-secondary); line-height: 1.6;
+    }
+    .sb-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--color-accent); margin-top: 7px; flex-shrink: 0;
+    }
+    .sidebar-visual {
+      background: var(--color-primary); border-radius: var(--radius-md);
+      padding: 24px; font-family: var(--font-mono); font-size: 0.8125rem;
+      color: rgba(255,255,255,0.9); line-height: 1.8;
+    }
+    .sidebar-visual .comment { color: rgba(255,255,255,0.35); }
+    .sidebar-visual .cmd { color: var(--color-accent-light); }
+    .sidebar-visual .added { color: #8BC48A; }
+    .sidebar-visual .removed { color: #E87070; }
+    .sidebar-visual .file { color: #A8C4C6; }
+
+    /* Tech stack */
+    #tech { background: var(--color-primary); }
+    #tech .section-label { color: var(--color-accent-light); }
+    #tech .section-heading { color: #fff; }
+    #tech .section-subtext { color: rgba(255,255,255,0.7); }
+    .tech-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+    .tech-card {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-md); padding: 24px 20px; text-align: center;
+      transition: background 0.25s;
+    }
+    .tech-card:hover { background: rgba(255,255,255,0.1); }
+    .tech-card h4 { font-size: 0.9375rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .tech-card p { font-size: 0.8125rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
+
+    /* Quick start */
+    #quickstart { background: var(--color-background); }
+    .quickstart-panel {
+      background: var(--color-primary); border-radius: var(--radius-md);
+      padding: 36px 40px; font-family: var(--font-mono); font-size: 0.8125rem;
+      color: rgba(255,255,255,0.9); line-height: 1.8; max-width: 720px;
+    }
+    .quickstart-panel .comment { color: rgba(255,255,255,0.35); }
+    .quickstart-panel .cmd { color: var(--color-accent-light); }
+
+    /* CTA */
+    .cta-section {
+      background: radial-gradient(ellipse at center, #FFFFFF 30%, #E8F0F0 100%);
+      border-top: 1px solid var(--color-border);
+      text-align: center; padding: 80px;
+    }
+    .cta-section .section-inner { max-width: 600px; }
+    .cta-section .section-heading { margin-bottom: 16px; }
+    .cta-section .section-subtext { margin: 0 auto 32px; text-align: center; }
+    .cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* Footer */
+    footer {
+      background: var(--color-accent-dark); padding: 40px 80px; color: rgba(255,255,255,0.8);
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto; display: flex; align-items: center;
+      justify-content: space-between; gap: 32px; flex-wrap: wrap;
+    }
+    .footer-logo .nbs  { font-size: 1.25rem; font-weight: 800; color: #fff; }
+    .footer-logo .labs { font-size: 1.25rem; font-weight: 200; color: rgba(255,255,255,0.8); }
+    .footer-tagline { font-size: 0.8125rem; color: rgba(255,255,255,0.5); margin-top: 4px; font-style: italic; }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { font-size: 0.875rem; color: rgba(255,255,255,0.65); transition: color 0.2s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-copy { font-size: 0.8125rem; color: rgba(255,255,255,0.4); }
+
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      section { padding: 72px 40px; }
+      .project-hero { padding: 100px 40px 72px; }
+      .nav-inner { padding: 0 40px; }
+      footer { padding: 32px 40px; }
+      .project-hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-grid { grid-template-columns: repeat(3, 1fr); }
+      .sidebar-grid { grid-template-columns: 1fr; gap: 32px; }
+      .tech-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      section { padding: 56px 20px; }
+      .project-hero { padding: 88px 20px 56px; }
+      .nav-inner { padding: 0 20px; }
+      footer { padding: 28px 20px; }
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex; flex-direction: column; position: absolute;
+        top: 64px; left: 0; right: 0;
+        background: rgba(242,242,242,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--color-border); padding: 16px 20px; gap: 4px;
+      }
+      .nav-links.open a { padding: 10px 0; font-size: 1rem; border-bottom: 1px solid var(--color-border); }
+      .nav-links.open a:last-child { border-bottom: none; }
+      .nav-hamburger { display: flex; }
+      .features-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: repeat(2, 1fr); }
+      .tech-grid { grid-template-columns: 1fr; }
+      .quickstart-panel { padding: 24px 20px; }
+      .cta-section { padding: 56px 20px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="logo"><span class="nbs">nbs</span><span class="labs">labs</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#research">Research</a></li>
+        <li><a href="/#oss">Open Source</a></li>
+        <li><a href="/#values">Values</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/#contact" class="nav-cta">Get in Touch</a></li>
+      </ul>
+      <div class="nav-hamburger" id="hamburger" aria-label="Toggle menu" role="button" tabindex="0">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="project-hero">
+    <div class="project-hero-inner">
+      <div>
+        <span class="project-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Developer Tool
+        </span>
+        <h1>DiffLense - <em>Privacy-First</em> Git Diff Viewer</h1>
+        <p class="project-hero-desc">
+          A clean, secure, and privacy-focused git diff viewer that processes everything client-side.
+          Upload a diff file or paste raw diff text to explore changes with a structured, beautiful interface.
+          No server, no tracking, no data ever leaves your browser.
+        </p>
+        <div class="hero-actions">
+          <a href="https://difflense.nbslabs.dev" target="_blank" rel="noopener" class="btn-primary">Try DiffLense Live</a>
+          <a href="https://github.com/nbslabs/difflense" target="_blank" rel="noopener" class="btn-outline">View on GitHub</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="assets/difflense-hero.jpg" alt="DiffLense - Git diff viewer interface showing side-by-side code comparison with file navigation sidebar" loading="eager">
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Features</p>
+        <h2 class="section-heading">Everything You Need to Review Diffs</h2>
+        <p class="section-subtext">DiffLense gives you a full-featured diff viewing experience without compromising your privacy or requiring any setup.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h3>Privacy First</h3>
+          <p>All processing happens locally in your browser. No data is ever sent to any server. Your code stays yours.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <h3>Lightning Fast</h3>
+          <p>No server round trips required. Everything runs instantly in the browser for a seamless experience.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <h3>Multiple View Modes</h3>
+          <p>Switch between side-by-side and unified diff views to match your preferred way of reviewing code changes.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <h3>File Navigation Sidebar</h3>
+          <p>Quick navigation for diffs with multiple files. Stays fixed when scrolling for easy access to any changed file.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          </div>
+          <h3>Syntax Highlighting</h3>
+          <p>Clean code highlighting with line numbers makes diffs easy to read and understand at a glance.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <h3>File Upload Support</h3>
+          <p>Upload diff files directly or paste content into the editor. Supports any standard git diff format.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <h3>Collapsible Files</h3>
+          <p>Expand or collapse individual files or all at once. Focus on the changes that matter most to you.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </div>
+          <h3>Customizable Display</h3>
+          <p>Settings to control how diffs are displayed. Smart file stats show additions and deletions per file.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>
+          </div>
+          <h3>Open Source</h3>
+          <p>Free and open source forever under GPL-3.0. Inspect the code, contribute, or self-host your own instance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How to Use -->
+  <section id="how-to-use">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">How to Use</p>
+        <h2 class="section-heading">Five Steps to Clearer Code Reviews</h2>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card reveal">
+          <span class="step-number">01</span>
+          <h3>Generate a Diff</h3>
+          <p>Run <code style="font-family:var(--font-mono);font-size:0.8em;background:rgba(126,166,168,0.12);padding:2px 6px;border-radius:4px;">git diff</code> in your repository</p>
+        </div>
+        <div class="step-card reveal">
+          <span class="step-number">02</span>
+          <h3>Upload or Paste</h3>
+          <p>Copy the diff output or upload a <code style="font-family:var(--font-mono);font-size:0.8em;background:rgba(126,166,168,0.12);padding:2px 6px;border-radius:4px;">.diff</code> file</p>
+        </div>
+        <div class="step-card reveal">
+          <span class="step-number">03</span>
+          <h3>Choose View Mode</h3>
+          <p>Select unified or side-by-side view to match your preference</p>
+        </div>
+        <div class="step-card reveal">
+          <span class="step-number">04</span>
+          <h3>Navigate Files</h3>
+          <p>Use the sidebar to quickly jump to specific files in the diff</p>
+        </div>
+        <div class="step-card reveal">
+          <span class="step-number">05</span>
+          <h3>Analyze Changes</h3>
+          <p>Review code changes with syntax highlighting and smart stats</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- File Navigation Sidebar Feature -->
+  <section id="sidebar-feature">
+    <div class="section-inner">
+      <div class="sidebar-grid">
+        <div>
+          <p class="section-label">File Navigation</p>
+          <h2 class="section-heading" style="margin-bottom:24px;">Smart Sidebar for Multi-File Diffs</h2>
+          <div class="sidebar-bullets">
+            <div class="sidebar-bullet reveal"><div class="sb-dot"></div><span>Lists all changed files with status icons (Modified, Added, Deleted)</span></div>
+            <div class="sidebar-bullet reveal"><div class="sb-dot"></div><span>Shows additions (+) and deletions (-) per file at a glance</span></div>
+            <div class="sidebar-bullet reveal"><div class="sb-dot"></div><span>Highlights new and deleted files with distinct badges</span></div>
+            <div class="sidebar-bullet reveal"><div class="sb-dot"></div><span>Click any file to instantly scroll to its diff section</span></div>
+            <div class="sidebar-bullet reveal"><div class="sb-dot"></div><span>Auto-shows when viewing diffs with multiple files</span></div>
+            <div class="sidebar-bullet reveal"><div class="sb-dot"></div><span>Stays fixed while scrolling through diff content for easy access</span></div>
+            <div class="sidebar-bullet reveal"><div class="sb-dot"></div><span>Toggle visibility with the "Show Files" / "Hide Files" button</span></div>
+          </div>
+        </div>
+        <div class="sidebar-visual reveal">
+          <span class="comment">// Example diff output</span><br>
+          <span class="file">src/auth/AuthService.ts</span><br>
+          <span class="removed">- private login(user: User) {</span><br>
+          <span class="added">+ async login(credentials: LoginCredentials): Promise&lt;AuthResponse&gt; {</span><br><br>
+          <span class="file">src/components/LoginForm.tsx</span><br>
+          <span class="added">+ import { useAuth } from '../hooks/useAuth';</span><br>
+          <span class="added">+ const { login, isLoading } = useAuth();</span><br><br>
+          <span class="file">package.json</span><br>
+          <span class="added">+ "@nbslabs/auth": "^2.1.0"</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section id="tech">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Technology</p>
+        <h2 class="section-heading">Built Simple, Stays Fast</h2>
+        <p class="section-subtext">DiffLense is a static website - no build tools, no frameworks, no dependencies. Pure web standards for maximum speed and reliability.</p>
+      </div>
+      <div class="tech-grid">
+        <div class="tech-card reveal">
+          <h4>HTML5</h4>
+          <p>Semantic markup for accessible, structured content</p>
+        </div>
+        <div class="tech-card reveal">
+          <h4>CSS3</h4>
+          <p>Responsive design with modern layout and animations</p>
+        </div>
+        <div class="tech-card reveal">
+          <h4>Vanilla JavaScript</h4>
+          <p>Zero dependencies, full client-side processing</p>
+        </div>
+        <div class="tech-card reveal">
+          <h4>Static Hosting</h4>
+          <p>GitHub Pages with custom domain support</p>
+        </div>
+        <div class="tech-card reveal">
+          <h4>GPL-3.0 License</h4>
+          <p>Free and open source, forever</p>
+        </div>
+        <div class="tech-card reveal">
+          <h4>No Backend</h4>
+          <p>Zero server requirements, zero data collection</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Start -->
+  <section id="quickstart">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Local Development</p>
+        <h2 class="section-heading">Run DiffLense Locally</h2>
+        <p class="section-subtext">Clone, serve, and start reviewing diffs in under a minute.</p>
+      </div>
+      <div class="quickstart-panel reveal">
+        <span class="comment"># Clone the repository</span><br>
+        <span class="cmd">git clone https://github.com/nbslabs/difflense.git</span><br>
+        <span class="cmd">cd difflense</span><br><br>
+        <span class="comment"># Serve with any HTTP server</span><br>
+        <span class="cmd">python -m http.server 8000</span><br><br>
+        <span class="comment"># Or use Node.js</span><br>
+        <span class="cmd">npx serve .</span><br><br>
+        <span class="comment"># Open http://localhost:8000</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="section-inner">
+      <h2 class="section-heading">Start Reviewing Diffs, Privately</h2>
+      <p class="section-subtext">No installation needed. Open DiffLense in your browser and paste a diff to get started.</p>
+      <div class="cta-actions">
+        <a href="https://difflense.nbslabs.dev" target="_blank" rel="noopener" class="btn-primary">Open DiffLense</a>
+        <a href="https://github.com/nbslabs/difflense" target="_blank" rel="noopener" class="btn-outline">Star on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo"><span class="nbs">nbs</span><span class="labs">labs</span></div>
+        <div class="footer-tagline">"Research it. Build it. Open-source it."</div>
+      </div>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="https://github.com/nbslabs" target="_blank" rel="noopener">GitHub</a>
+        <a href="/#oss">Open Source</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div class="footer-copy">2025 nbslabs - Dhaka, Bangladesh</div>
+    </div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    hamburger.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') navLinks.classList.toggle('open'); });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
